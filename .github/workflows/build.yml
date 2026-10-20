@@ -20,7 +20,8 @@ jobs:
         arch: ["all", "arm", "arm64", "x86", "x86_64"]
       fail-fast: false
     env:
-      FCL_KEYSTORE_PASSWORD: ${{ secrets.FCL_KEYSTORE_PASSWORD }}
+      # 优先使用仓库 secret；未配置 secret 的 fork 仓库回退到仓库内 key-store.jks 的口令
+      FCL_KEYSTORE_PASSWORD: ${{ secrets.FCL_KEYSTORE_PASSWORD || '666666' }}
       CURSE_API_KEY: ${{ secrets.CURSE_API_KEY }}
       OAUTH_API_KEY: ${{ secrets.OAUTH_API_KEY }}
     runs-on: ubuntu-latest
@@ -39,13 +40,13 @@ jobs:
           cache: "gradle"
 
       - name: Build release apk
-        if: ${{ github.repository_owner == 'FCL-Team' && github.event_name != 'pull_request' }}
+        if: ${{ github.event_name != 'pull_request' }}
         run: |
           chmod +x gradlew
           ./gradlew assemblerelease -Darch=${{ matrix.arch }} --no-daemon
 
       - name: Build debug apk
-        if: ${{ github.repository_owner != 'FCL-Team' || github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
           chmod +x gradlew
           ./gradlew assemblefordebug -Darch=${{ matrix.arch }} --no-daemon

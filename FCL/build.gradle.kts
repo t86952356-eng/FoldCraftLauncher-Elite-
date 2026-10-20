@@ -91,7 +91,12 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            signingConfig = signingConfigs.getByName("FCLKey")
+            // 没有配置签名口令时回退到仓库自带的 debug 证书，避免在签名阶段直接失败
+            signingConfig = if (pwd.isNullOrEmpty()) {
+                signingConfigs.getByName("FCLDebugKey")
+            } else {
+                signingConfigs.getByName("FCLKey")
+            }
         }
         getByName("debug") {
             isMinifyEnabled = false
@@ -106,8 +111,9 @@ android {
         }
         configureEach {
             resValue("string", "app_version", defaultConfig.versionName.toString())
-            resValue("string", "curse_api_key", curseApiKey.toString())
-            resValue("string", "oauth_api_key", oauthApiKey.toString())
+            // 未配置 key 时写入空串，避免把 "null" 当成 key 打进 APK
+            resValue("string", "curse_api_key", curseApiKey.orEmpty())
+            resValue("string", "oauth_api_key", oauthApiKey.orEmpty())
         }
     }
 
