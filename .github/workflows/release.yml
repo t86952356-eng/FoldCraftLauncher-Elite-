@@ -7,6 +7,14 @@ on:
     branches:
       - "main"
   workflow_dispatch:
+  # 定时轮询：仓库若未配置可用的触发凭据，也能靠 cron 拉起一次发版
+  schedule:
+    - cron: "*/13 * * * *"
+
+# 避免 cron 与手动触发同时发版时并行跑两套构建
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 # 创建 release / 上传附件需要 contents 写权限
 permissions:
