@@ -1,0 +1,96 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - "*"
+    branches:
+      - "main"
+  workflow_dispatch:
+
+# 避免 cron 与手动触发同时发版时并行跑两套构建
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+# 创建 release / 上传附件需要 contents 写权限
+permissions:
+  contents: write
+
+jobs:
+  # 解析版本号并判断是否已经发过版，避免 API 创建的 tag 再次触发本 workflow 时重复构建
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+      skip: ${{ steps.check.outputs.skip }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve tag
+        id: meta
+        run: |
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            tag="${{ github.ref_name }}"
+          else
+            tag=$(python3 -c "import json;print(json.load(open('version_map.json'))[0]['versionName'])")
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Check existing release
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          assets=$(gh release view "$TAG" --repo "${{ github.repository }}" --json assets --jq '.assets | length' 2>/dev/null || echo 0)
+          if [ "${assets:-0}" -gt 0 ]; then
+            echo "Release $TAG 已有 $assets 个附件，跳过重复构建"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    needs: prepare
+    if: needs.prepare.outputs.skip != 'true'
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
+  release:
+    needs: [prepare, build]
+    if: needs.prepare.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download apks
+        uses: actions/download-artifact@v6
+        with:
+          path: apks
+
+      - name: Extract changelog for current version
+        env:
+          TAG: ${{ needs.prepare.outputs.tag }}
+        run: |
+          awk -v tag="$TAG" '
+            $0 ~ "^## \\[" tag "\\]" { found = 1; next }
+            found && $0 ~ "^## \\[" { exit }
+            found { print }
+          ' CHANGELOG.md > RELEASE_BODY.md
+          if [ ! -s RELEASE_BODY.md ]; then
+            echo "FoldCraft Launcher $TAG" > RELEASE_BODY.md
+          fi
+
+      - name: Release
+        uses: softprops/action-gh-release@v3
+        with:
+          # 优先使用仓库自带的 TOKEN secret，未配置时使用内置 GITHUB_TOKEN
+          token: ${{ secrets.TOKEN || secrets.GITHUB_TOKEN }}
+          tag_name: ${{ needs.prepare.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          files: apks/**/*.apk
+          body_path: RELEASE_BODY.md
