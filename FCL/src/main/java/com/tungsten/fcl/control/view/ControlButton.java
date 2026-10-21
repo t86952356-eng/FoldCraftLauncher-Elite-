@@ -7,7 +7,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -24,6 +27,7 @@ import com.tungsten.fcl.control.GameMenu;
 import com.tungsten.fcl.control.GameTextSender;
 import com.tungsten.fcl.control.GestureMode;
 import com.tungsten.fcl.control.MouseMoveMode;
+import com.tungsten.fcl.control.ControllerIconRegistry;
 import com.tungsten.fcl.control.data.BaseInfoData;
 import com.tungsten.fcl.control.data.ButtonEventData;
 import com.tungsten.fcl.control.data.ControlButtonData;
@@ -199,9 +203,41 @@ public class ControlButton extends AppCompatButton implements CustomView {
         refreshBaseInfo(data);
         post(() -> {
             refreshStyle(data);
+            refreshIcon(data);
             boundaryPath = new Path();
             invalidate();
         });
+    }
+
+    /**
+     * Places the selected vector above the displayed text. Requested dimensions
+     * are stored in dp but are always clamped to this button's measured content
+     * box, preventing an icon from escaping the controller button.
+     */
+    private void refreshIcon(ControlButtonData data) {
+        ControllerIconRegistry.Icon icon = ControllerIconRegistry.INSTANCE.find(data.getIcon());
+        if (ControllerIconRegistry.NONE.equals(icon.getId())) {
+            setCompoundDrawables(null, null, null, null);
+            setCompoundDrawablePadding(0);
+            return;
+        }
+        Drawable drawable = AppCompatResources.getDrawable(getContext(), icon.getDrawableRes());
+        if (drawable == null) {
+            setCompoundDrawables(null, null, null, null);
+            return;
+        }
+        int safeInset = ConvertUtils.dip2px(getContext(), 2f);
+        int maxWidth = Math.max(1, getWidth() - safeInset * 2);
+        int textHeight = TextUtils.isEmpty(getText()) ? 0 :
+                (int) Math.ceil(getPaint().getFontMetrics().bottom - getPaint().getFontMetrics().top);
+        int drawablePadding = textHeight == 0 ? 0 : ConvertUtils.dip2px(getContext(), 2f);
+        int maxHeight = Math.max(1, getHeight() - textHeight - drawablePadding - safeInset * 2);
+        int width = Math.min(ConvertUtils.dip2px(getContext(), data.getIconWidth()), maxWidth);
+        int height = Math.min(ConvertUtils.dip2px(getContext(), data.getIconHeight()), maxHeight);
+        drawable = drawable.mutate();
+        drawable.setBounds(0, 0, Math.max(1, width), Math.max(1, height));
+        setCompoundDrawablePadding(drawablePadding);
+        setCompoundDrawables(null, drawable, null, null);
     }
 
     private void refreshBaseInfo(ControlButtonData data) {

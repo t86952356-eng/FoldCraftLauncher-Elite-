@@ -15,7 +15,9 @@ import com.google.gson.annotations.JsonAdapter;
 import com.tungsten.fclcore.fakefx.beans.InvalidationListener;
 import com.tungsten.fclcore.fakefx.beans.Observable;
 import com.tungsten.fclcore.fakefx.beans.property.ObjectProperty;
+import com.tungsten.fclcore.fakefx.beans.property.IntegerProperty;
 import com.tungsten.fclcore.fakefx.beans.property.SimpleObjectProperty;
+import com.tungsten.fclcore.fakefx.beans.property.SimpleIntegerProperty;
 import com.tungsten.fclcore.fakefx.beans.property.SimpleStringProperty;
 import com.tungsten.fclcore.fakefx.beans.property.StringProperty;
 import com.tungsten.fclcore.util.fakefx.ObservableHelper;
@@ -55,6 +57,51 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
 
     public String getText() {
         return textProperty.get();
+    }
+
+    /**
+     * Stable controller icon identifier and its requested dimensions in dp.
+     * The ID, rather than a local resource number, is serialized so controller
+     * files remain portable between installations.
+     */
+    private final StringProperty iconProperty = new SimpleStringProperty(this, "icon", "none");
+    private final IntegerProperty iconWidthProperty = new SimpleIntegerProperty(this, "iconWidth", 24);
+    private final IntegerProperty iconHeightProperty = new SimpleIntegerProperty(this, "iconHeight", 24);
+
+    public StringProperty iconProperty() {
+        return iconProperty;
+    }
+
+    public void setIcon(String icon) {
+        iconProperty.set(icon == null || icon.isEmpty() ? "none" : icon);
+    }
+
+    public String getIcon() {
+        return iconProperty.get();
+    }
+
+    public IntegerProperty iconWidthProperty() {
+        return iconWidthProperty;
+    }
+
+    public void setIconWidth(int width) {
+        iconWidthProperty.set(Math.max(8, Math.min(96, width)));
+    }
+
+    public int getIconWidth() {
+        return iconWidthProperty.get();
+    }
+
+    public IntegerProperty iconHeightProperty() {
+        return iconHeightProperty;
+    }
+
+    public void setIconHeight(int height) {
+        iconHeightProperty.set(Math.max(8, Math.min(96, height)));
+    }
+
+    public int getIconHeight() {
+        return iconHeightProperty.get();
     }
 
     /**
@@ -117,6 +164,9 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
 
     public void addPropertyChangedListener(InvalidationListener listener) {
         textProperty.addListener(listener);
+        iconProperty.addListener(listener);
+        iconWidthProperty.addListener(listener);
+        iconHeightProperty.addListener(listener);
         styleProperty.addListener(listener);
         baseInfoProperty.addListener(listener);
         eventProperty.addListener(listener);
@@ -145,6 +195,9 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
     public ControlButtonData clone() {
         ControlButtonData data = new ControlButtonData(UUID.randomUUID().toString());
         data.setText(getText());
+        data.setIcon(getIcon());
+        data.setIconWidth(getIconWidth());
+        data.setIconHeight(getIconHeight());
         data.setStyle(getStyle().clone());
         data.setBaseInfo(getBaseInfo().clone());
         data.setEvent(getEvent().clone());
@@ -178,6 +231,9 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
 
             obj.addProperty("id", src.getId());
             obj.addProperty("text", src.getText());
+            obj.addProperty("icon", src.getIcon());
+            obj.addProperty("iconWidth", src.getIconWidth());
+            obj.addProperty("iconHeight", src.getIconHeight());
             obj.addProperty("style", src.getStyle().getName());
             obj.add("baseInfo", new BaseInfoData.Serializer().serialize(src.getBaseInfo(), null, null));
             obj.add("event", new ButtonEventData.Serializer().serialize(src.getEvent(), null, null));
@@ -194,6 +250,9 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
             ControlButtonData data = new ControlButtonData(Optional.ofNullable(get(obj, "id")).map(JsonElement::getAsString).orElse(UUID.randomUUID().toString()));
 
             data.setText(Optional.ofNullable(get(obj, "text")).map(JsonElement::getAsString).orElse(""));
+            data.setIcon(Optional.ofNullable(get(obj, "icon")).map(JsonElement::getAsString).orElse("none"));
+            data.setIconWidth(Optional.ofNullable(get(obj, "iconWidth")).map(JsonElement::getAsInt).orElse(24));
+            data.setIconHeight(Optional.ofNullable(get(obj, "iconHeight")).map(JsonElement::getAsInt).orElse(24));
             if (!ButtonStyles.isInitialized()) {
                 ButtonStyles.init();
             }

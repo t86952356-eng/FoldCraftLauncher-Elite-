@@ -50,6 +50,18 @@ internal class EditButtonDetails(
 
         infoBinding.text.setText(data.text)
         data.textProperty().bind(infoBinding.text.stringProperty())
+        fun refreshIconName() {
+            infoBinding.iconText.setText(ControllerIconRegistry.find(data.icon).labelRes)
+        }
+        refreshIconName()
+        infoBinding.icon.setOnClickListener {
+            ControllerIconDialog(context, data.icon) { icon ->
+                data.icon = icon.id
+                refreshIconName()
+            }.show()
+        }
+        bindNumberSeekBar(infoBinding.iconWidth, data.iconWidthProperty())
+        bindNumberSeekBar(infoBinding.iconHeight, data.iconHeightProperty())
 
         setupVisibilitySpinner(visibility)
         setupSizeTypeSpinner(sizeType)

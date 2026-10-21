@@ -58,6 +58,109 @@
         <com.tungsten.fcllibrary.component.view.FCLTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:text="@string/edit_button_icon"
+            app:auto_text_tint="true" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.tungsten.fcllibrary.component.view.FCLTextView
+            android:id="@+id/icon_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:maxEms="12"
+            android:maxLines="1"
+            app:auto_text_tint="true" />
+
+        <com.tungsten.fcllibrary.component.view.FCLButton
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="8dp"
+            android:text="@string/menu_control_set"
+            app:auto_padding="false" />
+
+    </com.tungsten.fcllibrary.component.view.FCLLinearLayout>
+
+    <com.tungsten.fcllibrary.component.view.FCLLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <com.tungsten.fcllibrary.component.view.FCLTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:text="@string/edit_button_icon_width"
+            app:auto_text_tint="true" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.tungsten.fcllibrary.component.view.FCLNumberSeekBar
+            android:id="@+id/icon_width"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:max="96"
+            android:min="8"
+            app:suffix="dp" />
+
+    </com.tungsten.fcllibrary.component.view.FCLLinearLayout>
+
+    <com.tungsten.fcllibrary.component.view.FCLLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <com.tungsten.fcllibrary.component.view.FCLTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:text="@string/edit_button_icon_height"
+            app:auto_text_tint="true" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.tungsten.fcllibrary.component.view.FCLNumberSeekBar
+            android:id="@+id/icon_height"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:max="96"
+            android:min="8"
+            app:suffix="dp" />
+
+    </com.tungsten.fcllibrary.component.view.FCLLinearLayout>
+
+    <com.tungsten.fcllibrary.component.view.FCLLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <com.tungsten.fcllibrary.component.view.FCLTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/view_info_visibility"
             android:layout_gravity="center"
             app:auto_text_tint="true"
