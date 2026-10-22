@@ -7,9 +7,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ScrollView;
 import android.widget.CompoundButton;
-import com.tungsten.fcllibrary.component.view.FCLNumberSeekBar;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +28,7 @@ import com.tungsten.fcllibrary.component.view.FCLButton;
 import com.tungsten.fcllibrary.component.view.FCLEditText;
 import com.tungsten.fcllibrary.component.view.FCLLinearLayout;
 import com.tungsten.fcllibrary.component.view.FCLPreciseSeekBar;
+import com.tungsten.fcllibrary.component.view.FCLNumberSeekBar;
 import com.tungsten.fcllibrary.component.view.FCLTabLayout;
 import com.tungsten.fcllibrary.component.view.FCLTextView;
 import com.tungsten.fcllibrary.util.ConvertUtils;

@@ -440,8 +440,10 @@ public class FCLBridge {
         }
     }
 
+    private static final FrameRateSampler FPS_SAMPLER = new FrameRateSampler();
+
     public static int getFps() {
-        return CallbackBridge.getFps();
+        return FPS_SAMPLER.sample(android.os.SystemClock.elapsedRealtime(), CallbackBridge::getFps);
     }
 
     public String getModSummary() {
