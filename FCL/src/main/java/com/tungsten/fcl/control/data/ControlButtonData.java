@@ -191,16 +191,21 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
         }
     }
 
+    /** Applies an editor snapshot without changing the existing button ID. */
+    public void copySettingsFrom(ControlButtonData source) {
+        setText(source.getText());
+        setIcon(source.getIcon());
+        setIconWidth(source.getIconWidth());
+        setIconHeight(source.getIconHeight());
+        setStyle(source.getStyle().clone());
+        setBaseInfo(source.getBaseInfo().clone());
+        setEvent(source.getEvent().clone());
+    }
+
     @Override
     public ControlButtonData clone() {
         ControlButtonData data = new ControlButtonData(UUID.randomUUID().toString());
-        data.setText(getText());
-        data.setIcon(getIcon());
-        data.setIconWidth(getIconWidth());
-        data.setIconHeight(getIconHeight());
-        data.setStyle(getStyle().clone());
-        data.setBaseInfo(getBaseInfo().clone());
-        data.setEvent(getEvent().clone());
+        data.copySettingsFrom(this);
         return data;
     }
 

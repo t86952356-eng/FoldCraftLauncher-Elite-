@@ -167,11 +167,7 @@ private long loadDialogShowTime = 0;
             EditViewDialog dialog = new EditViewDialog(gameMenu.getActivity(), button.getData().clone(), gameMenu, new EditViewDialog.Callback() {
                 @Override
                 public void onPositive(CustomControl view) {
-                    ControlButtonData newData = ((ControlButtonData) view).clone();
-                    button.getData().setText(newData.getText());
-                    button.getData().setBaseInfo(newData.getBaseInfo());
-                    button.getData().setStyle(newData.getStyle());
-                    button.getData().setEvent(newData.getEvent());
+                    button.getData().copySettingsFrom((ControlButtonData) view);
                     saveController();
                     if (selectedView == button) {
                         positionEditBarAfterUpdate(button);

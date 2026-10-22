@@ -7,7 +7,11 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.RectF
+import android.graphics.Path
+import android.text.TextPaint
+import android.text.TextUtils
+import android.text.format.DateFormat
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -19,6 +23,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.target.CustomViewTarget
 import com.bumptech.glide.request.transition.Transition
+import com.mio.util.getUsedMemory
+import com.mio.util.getTotalMemory
+import com.tungsten.fclauncher.bridge.FCLBridge
 import com.mio.util.getScreenHeight
 import com.mio.util.getScreenWidth
 import com.tungsten.fcl.R
@@ -39,8 +46,8 @@ class MenuView @JvmOverloads constructor(
     private val screenWidth = getScreenWidth()
     private val screenHeight = getScreenHeight()
 
-    private val defaultWidth = ConvertUtils.dip2px(context, 40f)
-    private val defaultHeight = ConvertUtils.dip2px(context, 40f)
+    private val defaultWidth = minOf(screenWidth, ConvertUtils.dip2px(context, 232f))
+    private val defaultHeight = ConvertUtils.dip2px(context, 48f)
 
     /** 点击判定位移阈值，随屏幕密度缩放（原硬编码 10px 在高密度屏上过小，点击易失灵） */
     private val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
@@ -51,36 +58,61 @@ class MenuView @JvmOverloads constructor(
     private var pressed = false
 
     private var icon: Bitmap? = null
-    private var srcRect: Rect? = null
-    private var destRect: Rect? = null
-
-    private lateinit var strokePaint: Paint
-    private lateinit var areaPaint: Paint
-    private lateinit var iconPaint: Paint
+    private var gif: GifDrawable? = null
+    private var gifTarget: CustomViewTarget<MenuView, GifDrawable>? = null
+    private val density = resources.displayMetrics.density
+    private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.WHITE
+        style = Paint.Style.STROKE
+        strokeWidth = 1.5f * density
+    }
+    private val areaPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val iconPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+    private val titlePaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.WHITE
+        textSize = 14f * resources.displayMetrics.scaledDensity
+        typeface = android.graphics.Typeface.DEFAULT_BOLD
+    }
+    private val statsPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = Color.LTGRAY
+        textSize = 9f * resources.displayMetrics.scaledDensity
+    }
+    private val iconClip = Path()
+    private val cardRect = RectF()
+    private val imageRect = RectF()
+    private var statsText = ""
+    private val statsTick = object : Runnable {
+        override fun run() {
+            refreshStats()
+        }
+    }
 
     fun setup(gameMenu: GameMenu) {
         this.gameMenu = gameMenu
-
-        strokePaint = Paint().apply {
-            isAntiAlias = true
-            color = Color.DKGRAY
-            style = Paint.Style.STROKE
-            strokeWidth = ConvertUtils.dip2px(context, 2f).toFloat()
-        }
-
-        areaPaint = Paint().apply { isAntiAlias = true }
-        iconPaint = Paint().apply { isAntiAlias = true }
-
         initIcon()
-        if (!isGif) {
-            val icon = checkNotNull(icon)
-            srcRect = Rect(0, 0, icon.width, icon.height)
-            destRect = Rect(
-                ConvertUtils.dip2px(context, 6f),
-                ConvertUtils.dip2px(context, 6f),
-                ConvertUtils.dip2px(context, 34f),
-                ConvertUtils.dip2px(context, 34f),
-            )
+        refreshStats()
+    }
+
+    /** Samples actual game FPS and system RAM, not the Android UI frame rate. */
+    fun refreshStats() {
+        removeCallbacks(statsTick)
+        if (!::gameMenu.isInitialized) return
+        val setting = gameMenu.menuSetting
+        val values = mutableListOf<String>()
+        if (setting.isMenuShowFps) values += "FPS ${if (gameMenu.isSimulated) 0 else FCLBridge.getFps()}"
+        if (setting.isMenuShowRam) {
+            val total = getTotalMemory(context)
+            val used = getUsedMemory(context)
+            val percent = if (total > 0) (used * 100 / total).coerceIn(0, 100) else 0
+            values += context.getString(R.string.menu_view_ram_value, percent)
+        }
+        if (setting.isMenuShowTime) {
+            values += DateFormat.getTimeFormat(context).format(java.util.Date())
+        }
+        statsText = values.joinToString("  •  ")
+        invalidate()
+        if (isAttachedToWindow && isShown && windowVisibility == VISIBLE && values.isNotEmpty()) {
+            postDelayed(statsTick, 1000L)
         }
     }
 
@@ -90,7 +122,9 @@ class MenuView @JvmOverloads constructor(
             layoutParams.height = defaultHeight
             layoutParams = layoutParams
             x = (screenWidth * gameMenu.menuSetting.menuPositionX).toFloat()
+                .coerceIn(0f, (screenWidth - defaultWidth).coerceAtLeast(0).toFloat())
             y = (screenHeight * gameMenu.menuSetting.menuPositionY).toFloat()
+                .coerceIn(0f, (screenHeight - defaultHeight).coerceAtLeast(0).toFloat())
         }
     }
 
@@ -99,23 +133,29 @@ class MenuView @JvmOverloads constructor(
             icon = BitmapFactory.decodeFile(File(FCLPath.FILES_DIR, "menu_icon.png").absolutePath)
         } else if (File(FCLPath.FILES_DIR, "menu_icon.gif").exists()) {
             isGif = true
+            val target = object : CustomViewTarget<MenuView, GifDrawable>(this) {
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    isGif = false
+                    icon = BitmapFactory.decodeResource(context.resources, R.drawable.img_app)
+                    invalidate()
+                }
+
+                override fun onResourceReady(resource: GifDrawable, transition: Transition<in GifDrawable>?) {
+                    gif = resource
+                    resource.callback = this@MenuView
+                    updateGifPlayback()
+                    invalidate()
+                }
+
+                override fun onResourceCleared(placeholder: Drawable?) {
+                    gif?.stop()
+                    gif?.callback = null
+                    gif = null
+                }
+            }
+            gifTarget = target
             Glide.with(this).asGif().skipMemoryCache(true)
-                .load(File(FCLPath.FILES_DIR, "menu_icon.gif"))
-                .into(object : CustomViewTarget<MenuView, GifDrawable>(this) {
-                    override fun onLoadFailed(errorDrawable: Drawable?) {
-                    }
-
-                    override fun onResourceReady(
-                        resource: GifDrawable,
-                        transition: Transition<in GifDrawable>?,
-                    ) {
-                        background = resource
-                        resource.start()
-                    }
-
-                    override fun onResourceCleared(placeholder: Drawable?) {
-                    }
-                })
+                .load(File(FCLPath.FILES_DIR, "menu_icon.gif")).into(target)
         }
         if (!isGif && icon == null) {
             icon = BitmapFactory.decodeResource(context.resources, R.drawable.img_app)
@@ -124,21 +164,93 @@ class MenuView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (isGif) {
-            return
+        if (!::gameMenu.isInitialized) return
+        cardRect.set(1f * density, 1f * density, width - density, height - density)
+        areaPaint.color = if (pressed) 0xEE303844.toInt() else 0xCC161C26.toInt()
+        canvas.drawRoundRect(cardRect, 10f * density, 10f * density, areaPaint)
+
+        val cx = 24f * density
+        val cy = height / 2f
+        val radius = minOf(18f * density, height / 2f - 3f * density)
+        val checkpoint = canvas.save()
+        iconClip.reset()
+        iconClip.addCircle(cx, cy, radius, Path.Direction.CW)
+        canvas.clipPath(iconClip)
+        areaPaint.color = Color.DKGRAY
+        canvas.drawCircle(cx, cy, radius, areaPaint)
+        // Center-crop inside the circular clip, for both PNG and animated GIF.
+        val bitmap = icon
+        val animated = gif
+        val sourceWidth = animated?.intrinsicWidth ?: bitmap?.width ?: 0
+        val sourceHeight = animated?.intrinsicHeight ?: bitmap?.height ?: 0
+        if (sourceWidth > 0 && sourceHeight > 0) {
+            val scale = maxOf(radius * 2 / sourceWidth, radius * 2 / sourceHeight)
+            val halfWidth = sourceWidth * scale / 2f
+            val halfHeight = sourceHeight * scale / 2f
+            imageRect.set(cx - halfWidth, cy - halfHeight, cx + halfWidth, cy + halfHeight)
+            if (animated != null) {
+                animated.setBounds(imageRect.left.toInt(), imageRect.top.toInt(), imageRect.right.toInt(), imageRect.bottom.toInt())
+                animated.draw(canvas)
+            } else if (bitmap != null) {
+                canvas.drawBitmap(bitmap, null, imageRect, iconPaint)
+            }
         }
-        val icon = icon ?: return
-        val srcRect = srcRect ?: return
-        val destRect = destRect ?: return
-        if (pressed) {
-            areaPaint.color = context.getColor(R.color.ui_bg_color)
+        canvas.restoreToCount(checkpoint)
+        canvas.drawCircle(cx, cy, radius, strokePaint)
+
+        val textX = 50f * density
+        val available = (width - textX - 8f * density).coerceAtLeast(0f)
+        val titleBaseline = if (statsText.isEmpty()) {
+            cy - (titlePaint.ascent() + titlePaint.descent()) / 2
         } else {
-            areaPaint.color = Color.TRANSPARENT
+            cy - 3f * density
         }
-        val radius = (measuredWidth shr 1).toFloat()
-        canvas.drawCircle(radius, radius, radius - ConvertUtils.dip2px(context, 1f), strokePaint)
-        canvas.drawCircle(radius, radius, radius - ConvertUtils.dip2px(context, 2f), areaPaint)
-        canvas.drawBitmap(icon, srcRect, destRect, iconPaint)
+        val title = TextUtils.ellipsize(context.getString(R.string.menu_view_title), titlePaint, available, TextUtils.TruncateAt.END)
+        canvas.drawText(title.toString(), textX, titleBaseline, titlePaint)
+        if (statsText.isNotEmpty()) {
+            val stats = TextUtils.ellipsize(statsText, statsPaint, available, TextUtils.TruncateAt.END)
+            canvas.drawText(stats.toString(), textX, cy + 12f * density, statsPaint)
+        }
+    }
+
+    private fun updateGifPlayback() {
+        val playing = isAttachedToWindow && isShown && windowVisibility == VISIBLE
+        gif?.setVisible(playing, false)
+        if (playing) gif?.start() else gif?.stop()
+    }
+
+    override fun verifyDrawable(who: Drawable): Boolean = who === gif || super.verifyDrawable(who)
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (::gameMenu.isInitialized && isGif && gifTarget == null) initIcon()
+        updateGifPlayback()
+        refreshStats()
+    }
+
+    override fun onDetachedFromWindow() {
+        removeCallbacks(statsTick)
+        gif?.stop()
+        gifTarget?.let { Glide.with(context).clear(it) }
+        gifTarget = null
+        super.onDetachedFromWindow()
+    }
+
+    override fun onVisibilityChanged(changedView: View, visibility: Int) {
+        super.onVisibilityChanged(changedView, visibility)
+        // View's constructor can call this before Kotlin fields are initialized.
+        if (::gameMenu.isInitialized) {
+            updateGifPlayback()
+            refreshStats()
+        }
+    }
+
+    override fun onWindowVisibilityChanged(visibility: Int) {
+        super.onWindowVisibilityChanged(visibility)
+        if (::gameMenu.isInitialized) {
+            updateGifPlayback()
+            refreshStats()
+        }
     }
 
     // 按下点的屏幕坐标：拖动会 setX/setY 移动 View 本身，松手时相对坐标差恒为 0，
@@ -165,9 +277,9 @@ class MenuView @JvmOverloads constructor(
             MotionEvent.ACTION_MOVE -> {
                 if (!gameMenu.menuSetting.isLockMenuView) {
                     val targetX = (x + event.x - downX)
-                        .coerceIn(0f, (screenWidth - measuredWidth).toFloat())
+                        .coerceIn(0f, (screenWidth - measuredWidth).coerceAtLeast(0).toFloat())
                     val targetY = (y + event.y - downY)
-                        .coerceIn(0f, (screenHeight - measuredHeight).toFloat())
+                        .coerceIn(0f, (screenHeight - measuredHeight).coerceAtLeast(0).toFloat())
                     x = targetX
                     y = targetY
                     gameMenu.menuSetting.menuPositionX = (targetX / screenWidth).toDouble()

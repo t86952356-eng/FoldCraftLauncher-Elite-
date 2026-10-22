@@ -1141,6 +1141,18 @@ public class GameMenu implements MenuCallback, FCLBridgeCallback {
 
     private void handleRightSwitchToggle(RightMenuTag tag, boolean checked) {
         switch (tag) {
+            case MENU_SHOW_FPS:
+                menuSetting.setMenuShowFps(checked);
+                menuView.refreshStats();
+                break;
+            case MENU_SHOW_RAM:
+                menuSetting.setMenuShowRam(checked);
+                menuView.refreshStats();
+                break;
+            case MENU_SHOW_TIME:
+                menuSetting.setMenuShowTime(checked);
+                menuView.refreshStats();
+                break;
             case LOCK_VIEW:
                 menuSetting.setLockMenuView(checked);
                 break;

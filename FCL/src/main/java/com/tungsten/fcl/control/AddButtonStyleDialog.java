@@ -2,13 +2,14 @@ package com.tungsten.fcl.control;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ScrollView;
+import android.widget.CompoundButton;
+import com.tungsten.fcllibrary.component.view.FCLNumberSeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +48,7 @@ public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListe
     private FCLLinearLayout normalStyleLayout;
     private FCLLinearLayout pressedStyleLayout;
 
+    private ButtonStyleTransition previewTransition;
     private ControlButtonStyle style;
     private boolean isEdit;
 
@@ -77,6 +79,19 @@ public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListe
         normalStyleLayout = (FCLLinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.view_button_style, null);
         pressedStyleLayout = (FCLLinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.view_button_style, null);
 
+        previewTransition = new ButtonStyleTransition(button, null);
+        setOnDismissListener(dialog -> previewTransition.cancel());
+        CompoundButton animationEnabled = findViewById(R.id.animation_enabled);
+        FCLNumberSeekBar animationDuration = findViewById(R.id.animation_duration);
+        animationEnabled.setChecked(style.isAnimationEnabled());
+        animationDuration.addProgressListener();
+        animationDuration.setProgress(style.getAnimationDuration());
+        animationDuration.setEnabled(style.isAnimationEnabled());
+        animationEnabled.setOnCheckedChangeListener((view, checked) -> {
+            style.setAnimationEnabled(checked);
+            animationDuration.setEnabled(checked);
+        });
+        style.animationDurationProperty().bindBidirectional(animationDuration.progressProperty());
         editName.setText(style.getName());
         style.nameProperty().bind(editName.stringProperty());
         changeButtonStyle();
@@ -314,31 +329,17 @@ public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListe
 
     @SuppressLint("ClickableViewAccessibility")
     private void changeButtonStyle() {
-        GradientDrawable drawableNormal = new GradientDrawable();
-        drawableNormal.setCornerRadius(ConvertUtils.dip2px(getContext(), style.getCornerRadius() / 10f));
-        drawableNormal.setStroke(ConvertUtils.dip2px(getContext(), style.getStrokeWidth() / 10f), style.getStrokeColor());
-        drawableNormal.setColor(style.getFillColor());
-        GradientDrawable drawablePressed = new GradientDrawable();
-        drawablePressed.setCornerRadius(ConvertUtils.dip2px(getContext(), style.getCornerRadiusPressed() / 10f));
-        drawablePressed.setStroke(ConvertUtils.dip2px(getContext(), style.getStrokeWidthPressed() / 10f), style.getStrokeColorPressed());
-        drawablePressed.setColor(style.getFillColorPressed());
         button.setGravity(Gravity.CENTER);
         button.setPadding(0, 0, 0, 0);
         button.setText("S");
         button.setAllCaps(false);
-        button.setTextSize(style.getTextSize());
-        button.setTextColor(style.getTextColor());
-        button.setBackground(drawableNormal);
+        previewTransition.reset(style);
         button.setOnTouchListener((view, event) -> {
             if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                ((AppCompatButton) view).setTextSize(style.getTextSizePressed());
-                ((AppCompatButton) view).setTextColor(style.getTextColorPressed());
-                ((AppCompatButton) view).setBackground(drawablePressed);
-            }
-            if (event.getActionMasked() == MotionEvent.ACTION_UP || event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
-                ((AppCompatButton) view).setTextSize(style.getTextSize());
-                ((AppCompatButton) view).setTextColor(style.getTextColor());
-                ((AppCompatButton) view).setBackground(drawableNormal);
+                previewTransition.setPressed(true);
+            } else if (event.getActionMasked() == MotionEvent.ACTION_UP
+                    || event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
+                previewTransition.setPressed(false);
             }
             return true;
         });
