@@ -56,6 +56,35 @@
 
     </com.tungsten.fcllibrary.component.view.FCLLinearLayout>
 
+    <LinearLayout
+        android:id="@+id/animation_options"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_layout">
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/animation_enabled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/style_animation_enabled" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/style_animation_duration" />
+
+        <com.tungsten.fcllibrary.component.view.FCLNumberSeekBar
+            android:id="@+id/animation_duration"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:min="50"
+            android:max="1000"
+            app:suffix="ms" />
+    </LinearLayout>
+
     <com.tungsten.fcllibrary.component.view.FCLTabLayout
         android:layout_marginTop="10dp"
         android:id="@+id/tab_layout"
@@ -66,7 +95,7 @@
         app:tabGravity="fill"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_layout">
+        app:layout_constraintTop_toBottomOf="@id/animation_options">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -86,7 +115,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tab_layout"
         app:layout_constraintBottom_toTopOf="@+id/positive"
         android:layout_width="match_parent"
-        android:layout_height="120dp"/>
+        android:layout_height="0dp"/>
 
     <com.tungsten.fcllibrary.component.view.FCLButton
         android:id="@+id/positive"

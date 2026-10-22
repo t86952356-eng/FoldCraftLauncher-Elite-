@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.4.2] - 2026-10-22
+
+### العربية
+
+- إصلاح حفظ أيقونة زر التحكم وأبعادها وظهورها بعد تغيير الحجم، وإعادة رسم السيف والقوس والفأس والبيكاكس.
+- إضافة Enable Animation Transition بين Normal وحالة الضغط، مع مدة قابلة للضبط من 50 إلى 1000ms ومعاينة داخل محرر الستايل.
+- إعادة تصميم Menu View بشكل مستطيل، مع أيقونة دائرية مقصوصة داخل Outline ودعم PNG وGIF، وعنوان Elite Luncher، وعدادات FPS واستهلاك RAM والساعة مع خيارات إظهار مستقلة.
+- توحيد قراءة FPS حتى لا تتعارض عدادات الشاشة مع بعضها، والحفاظ على توافق إعدادات الستايل القديمة.
+
+### English
+
+- Fix controller icon persistence, sizing and rendering after layout changes; redraw the sword, bow, axe and pickaxe vectors.
+- Add optional smooth normal/pressed style transitions with a 50–1000 ms duration and an editor preview.
+- Redesign Menu View as an Elite Luncher card with a circular clipped PNG/GIF icon and individually configurable FPS, system RAM usage and clock displays.
+- Share native FPS sampling between overlays and preserve instant transitions for legacy styles.
+
+### Validation
+
+- Eight targeted regression tests passed for editor snapshots, icon export, style settings, menu settings and shared FPS sampling.
+- Java/Kotlin compilation and the five-architecture build passed before release preparation.
+- No physical Android device testing was performed.
+
 ## [1.3.4.1] - 2026-10-20
 
 ### 中文

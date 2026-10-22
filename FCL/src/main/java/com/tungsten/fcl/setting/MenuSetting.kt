@@ -50,6 +50,27 @@ class MenuSetting {
             changed()
         }
 
+    var isMenuShowFps: Boolean = true
+        set(value) {
+            if (field == value) return
+            field = value
+            changed()
+        }
+
+    var isMenuShowRam: Boolean = true
+        set(value) {
+            if (field == value) return
+            field = value
+            changed()
+        }
+
+    var isMenuShowTime: Boolean = true
+        set(value) {
+            if (field == value) return
+            field = value
+            changed()
+        }
+
     var isShowFps: Boolean = false
         set(value) {
             if (field == value) return
@@ -380,6 +401,9 @@ class MenuSetting {
                 addProperty("autoFitDist", src.autoFitDist)
                 addProperty("lockMenuView", src.isLockMenuView)
                 addProperty("hideMenuView", src.isHideMenuView)
+                addProperty("menuShowFps", src.isMenuShowFps)
+                addProperty("menuShowRam", src.isMenuShowRam)
+                addProperty("menuShowTime", src.isMenuShowTime)
                 addProperty("showFps", src.isShowFps)
                 addProperty("showMemory", src.isShowMemory)
                 addProperty("disableSoftKeyAdjust", src.isDisableSoftKeyAdjust)
@@ -436,6 +460,9 @@ class MenuSetting {
                 ms.autoFitDist = json["autoFitDist"]?.asInt ?: 0
                 ms.isLockMenuView = json["lockMenuView"]?.asBoolean ?: false
                 ms.isHideMenuView = json["hideMenuView"]?.asBoolean ?: false
+                ms.isMenuShowFps = json["menuShowFps"]?.asBoolean ?: true
+                ms.isMenuShowRam = json["menuShowRam"]?.asBoolean ?: true
+                ms.isMenuShowTime = json["menuShowTime"]?.asBoolean ?: true
                 ms.isShowFps = json["showFps"]?.asBoolean ?: false
                 ms.isShowMemory = json["showMemory"]?.asBoolean ?: false
                 ms.isDisableSoftKeyAdjust = json["disableSoftKeyAdjust"]?.asBoolean ?: false

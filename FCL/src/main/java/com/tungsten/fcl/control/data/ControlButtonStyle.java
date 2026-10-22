@@ -15,6 +15,8 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.JsonAdapter;
 import com.tungsten.fclcore.fakefx.beans.InvalidationListener;
 import com.tungsten.fclcore.fakefx.beans.Observable;
+import com.tungsten.fclcore.fakefx.beans.property.BooleanProperty;
+import com.tungsten.fclcore.fakefx.beans.property.SimpleBooleanProperty;
 import com.tungsten.fclcore.fakefx.beans.property.IntegerProperty;
 import com.tungsten.fclcore.fakefx.beans.property.SimpleIntegerProperty;
 import com.tungsten.fclcore.fakefx.beans.property.SimpleStringProperty;
@@ -254,6 +256,34 @@ public class ControlButtonStyle implements Cloneable, Observable {
         return fillColorPressedProperty.get();
     }
 
+    // Opt-in for old controller/style files: they retain instant transitions.
+    private final BooleanProperty animationEnabledProperty = new SimpleBooleanProperty(this, "animationEnabled", false);
+    private final IntegerProperty animationDurationProperty = new SimpleIntegerProperty(this, "animationDuration", 180);
+
+    public BooleanProperty animationEnabledProperty() {
+        return animationEnabledProperty;
+    }
+
+    public boolean isAnimationEnabled() {
+        return animationEnabledProperty.get();
+    }
+
+    public void setAnimationEnabled(boolean enabled) {
+        animationEnabledProperty.set(enabled);
+    }
+
+    public IntegerProperty animationDurationProperty() {
+        return animationDurationProperty;
+    }
+
+    public int getAnimationDuration() {
+        return Math.max(50, Math.min(1000, animationDurationProperty.get()));
+    }
+
+    public void setAnimationDuration(int duration) {
+        animationDurationProperty.set(Math.max(50, Math.min(1000, duration)));
+    }
+
     public ControlButtonStyle(String name) {
         this.nameProperty.set(name);
 
@@ -261,6 +291,8 @@ public class ControlButtonStyle implements Cloneable, Observable {
     }
 
     public void addPropertyChangedListener(InvalidationListener listener) {
+        animationEnabledProperty.addListener(listener);
+        animationDurationProperty.addListener(listener);
         nameProperty.addListener(listener);
         textColorProperty.addListener(listener);
         textSizeProperty.addListener(listener);
@@ -307,6 +339,8 @@ public class ControlButtonStyle implements Cloneable, Observable {
         style.setStrokeWidthPressed(getStrokeWidthPressed());
         style.setCornerRadiusPressed(getCornerRadiusPressed());
         style.setFillColorPressed(getFillColorPressed());
+        style.setAnimationEnabled(isAnimationEnabled());
+        style.setAnimationDuration(getAnimationDuration());
         return style;
     }
 
@@ -316,6 +350,8 @@ public class ControlButtonStyle implements Cloneable, Observable {
             if (src == null) return JsonNull.INSTANCE;
             JsonObject obj = new JsonObject();
 
+            obj.addProperty("animationEnabled", src.isAnimationEnabled());
+            obj.addProperty("animationDuration", src.getAnimationDuration());
             obj.addProperty("name", src.getName());
             obj.addProperty("textColor", src.getTextColor());
             obj.addProperty("textSize", src.getTextSize());
@@ -341,6 +377,8 @@ public class ControlButtonStyle implements Cloneable, Observable {
 
             ControlButtonStyle style = new ControlButtonStyle(Optional.ofNullable(obj.get("name")).map(JsonElement::getAsString).orElse(""));
 
+            style.setAnimationEnabled(Optional.ofNullable(obj.get("animationEnabled")).map(JsonElement::getAsBoolean).orElse(false));
+            style.setAnimationDuration(Optional.ofNullable(obj.get("animationDuration")).map(JsonElement::getAsInt).orElse(180));
             style.setTextColor(Optional.ofNullable(obj.get("textColor")).map(JsonElement::getAsInt).orElse(Color.WHITE));
             style.setTextSize(Optional.ofNullable(obj.get("textSize")).map(JsonElement::getAsInt).orElse(12));
             style.setStrokeColor(Optional.ofNullable(obj.get("strokeColor")).map(JsonElement::getAsInt).orElse(Color.DKGRAY));

@@ -1669,4 +1669,12 @@
     <string name="quark_promo_message">This is your %1$dth game launch!\n\nIf FCL has been helpful to you, feel free to take a moment to open Quark Drive, sign up or log in and tap the Save to Drive button (no download needed). It would mean a lot to us. Thank you so much!</string>
     <string name="quark_promo_open">Open Quark Drive</string>
     <string name="quark_promo_start">Start Game</string>
+    <string name="style_animation_enabled">Enable Animation Transition</string>
+    <string name="style_animation_duration">Transition duration (ms; lower is faster)</string>
+    <string name="menu_view_show_fps">Menu View: Show FPS</string>
+    <string name="menu_view_show_ram">Menu View: Show RAM usage</string>
+    <string name="menu_view_show_time">Menu View: Show clock</string>
+    <string name="menu_view_title">Elite Luncher</string>
+    <string name="menu_view_ram_value">RAM %1$d%%</string>
+    <string name="menu_view_settings">Menu View</string>
 </resources>

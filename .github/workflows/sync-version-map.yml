@@ -18,6 +18,8 @@ concurrency:
 
 jobs:
   sync:
+    # Fork releases must not write their version map into the upstream mirror.
+    if: github.repository == 'FCL-Team/FoldCraftLauncher'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout FoldCraftLauncher

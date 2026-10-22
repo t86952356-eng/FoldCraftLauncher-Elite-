@@ -11,7 +11,7 @@
     android:paddingEnd="12dp">
 
     <!-- 分类标签栏：顶部图标切换分类，下方列表直接显示所选分类的设置项。
-         抽屉内宽约 261dp，6 个 Tab 用 fixed+fill 均分（约 43dp/个），保证一屏全部可见 -->
+         Seven categories use scrollable tabs to retain accessible touch targets. -->
     <com.tungsten.fcllibrary.component.view.FCLTabLayout
         android:id="@+id/menu_tabs"
         android:layout_width="match_parent"
@@ -19,7 +19,8 @@
         android:background="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
-        app:tabMode="fixed"
+        app:tabMode="scrollable"
+        app:tabMinWidth="48dp"
         app:tabUnboundedRipple="false">
 
         <com.google.android.material.tabs.TabItem
@@ -46,6 +47,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:icon="@drawable/ic_mobile_rotate_filled" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:icon="@drawable/ic_dashboard_filled" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

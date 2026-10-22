@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -24,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.tungsten.fcl.R;
 import com.tungsten.fcl.control.GameMenu;
+import com.tungsten.fcl.control.ButtonStyleTransition;
 import com.tungsten.fcl.control.GameTextSender;
 import com.tungsten.fcl.control.GestureMode;
 import com.tungsten.fcl.control.MouseMoveMode;
@@ -214,14 +214,24 @@ public class ControlButton extends AppCompatButton implements CustomView {
      * are stored in dp but are always clamped to this button's measured content
      * box, preventing an icon from escaping the controller button.
      */
+    private Drawable controllerIcon;
+    private String controllerIconId;
+
     private void refreshIcon(ControlButtonData data) {
         ControllerIconRegistry.Icon icon = ControllerIconRegistry.INSTANCE.find(data.getIcon());
         if (ControllerIconRegistry.NONE.equals(icon.getId())) {
-            setCompoundDrawables(null, null, null, null);
-            setCompoundDrawablePadding(0);
+            controllerIcon = null;
+            controllerIconId = null;
+            if (getCompoundDrawables()[1] != null) setCompoundDrawables(null, null, null, null);
+            if (getCompoundDrawablePadding() != 0) setCompoundDrawablePadding(0);
             return;
         }
-        Drawable drawable = AppCompatResources.getDrawable(getContext(), icon.getDrawableRes());
+        if (controllerIcon == null || !icon.getId().equals(controllerIconId)) {
+            Drawable loaded = AppCompatResources.getDrawable(getContext(), icon.getDrawableRes());
+            controllerIcon = loaded == null ? null : loaded.mutate();
+            controllerIconId = icon.getId();
+        }
+        Drawable drawable = controllerIcon;
         if (drawable == null) {
             setCompoundDrawables(null, null, null, null);
             return;
@@ -229,13 +239,22 @@ public class ControlButton extends AppCompatButton implements CustomView {
         int safeInset = ConvertUtils.dip2px(getContext(), 2f);
         int maxWidth = Math.max(1, getWidth() - safeInset * 2);
         int textHeight = TextUtils.isEmpty(getText()) ? 0 :
-                (int) Math.ceil(getPaint().getFontMetrics().bottom - getPaint().getFontMetrics().top);
+                Math.max(getLayout() == null ? 0 : getLayout().getHeight(),
+                        (int) Math.ceil(getPaint().getFontMetrics().bottom - getPaint().getFontMetrics().top));
         int drawablePadding = textHeight == 0 ? 0 : ConvertUtils.dip2px(getContext(), 2f);
         int maxHeight = Math.max(1, getHeight() - textHeight - drawablePadding - safeInset * 2);
-        int width = Math.min(ConvertUtils.dip2px(getContext(), data.getIconWidth()), maxWidth);
-        int height = Math.min(ConvertUtils.dip2px(getContext(), data.getIconHeight()), maxHeight);
-        drawable = drawable.mutate();
-        drawable.setBounds(0, 0, Math.max(1, width), Math.max(1, height));
+        int requestedWidth = ConvertUtils.dip2px(getContext(), data.getIconWidth());
+        int requestedHeight = ConvertUtils.dip2px(getContext(), data.getIconHeight());
+        float scale = Math.min(1f, Math.min(maxWidth / (float) requestedWidth, maxHeight / (float) requestedHeight));
+        int width = Math.round(requestedWidth * scale);
+        int height = Math.round(requestedHeight * scale);
+        width = Math.max(1, width);
+        height = Math.max(1, height);
+        if (getCompoundDrawables()[1] == drawable && drawable.getBounds().width() == width
+                && drawable.getBounds().height() == height && getCompoundDrawablePadding() == drawablePadding) {
+            return;
+        }
+        drawable.setBounds(0, 0, width, height);
         setCompoundDrawablePadding(drawablePadding);
         setCompoundDrawables(null, drawable, null, null);
     }
@@ -287,41 +306,46 @@ public class ControlButton extends AppCompatButton implements CustomView {
         visibilityProperty().addListener(visibilityListener);
     }
 
-    private GradientDrawable drawableNormal;
-    private GradientDrawable drawablePressed;
+    private ButtonStyleTransition styleTransition;
 
     private void refreshStyle(ControlButtonData data) {
-        drawableNormal = new GradientDrawable();
-        drawableNormal.setCornerRadius(ConvertUtils.dip2px(getContext(), data.getStyle().getCornerRadius() / 10f));
-        drawableNormal.setStroke(ConvertUtils.dip2px(getContext(), data.getStyle().getStrokeWidth() / 10f), data.getStyle().getStrokeColor());
-        drawableNormal.setColor(data.getStyle().getFillColor());
-        drawablePressed = new GradientDrawable();
-        drawablePressed.setCornerRadius(ConvertUtils.dip2px(getContext(), data.getStyle().getCornerRadiusPressed() / 10f));
-        drawablePressed.setStroke(ConvertUtils.dip2px(getContext(), data.getStyle().getStrokeWidthPressed() / 10f), data.getStyle().getStrokeColorPressed());
-        drawablePressed.setColor(data.getStyle().getFillColorPressed());
+        if (styleTransition == null) {
+            styleTransition = new ButtonStyleTransition(this, () -> refreshIcon(getData()));
+        }
         setGravity(Gravity.CENTER);
         setPadding(0, 0, 0, 0);
         setAllCaps(false);
-        setTextSize(data.getStyle().getTextSize());
-        setTextColor(data.getStyle().getTextColor());
-        setBackground(drawableNormal);
+        setSupportCompoundDrawablesTintList(null);
+        styleTransition.reset(data.getStyle());
     }
 
     private void setNormalStyle() {
-        setTextSize(getData().getStyle().getTextSize());
-        setTextColor(getData().getStyle().getTextColor());
-        setBackground(drawableNormal);
+        if (styleTransition != null) styleTransition.setPressed(false);
     }
 
     private void setPressedStyle() {
-        setTextSize(getData().getStyle().getTextSizePressed());
-        setTextColor(getData().getStyle().getTextColorPressed());
-        setBackground(drawablePressed);
+        if (styleTransition != null) styleTransition.setPressed(true);
+    }
+
+    @Override
+    protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+        super.onSizeChanged(width, height, oldWidth, oldHeight);
+        // The first notifyData post may precede layout; recalculate with real bounds.
+        if (dataProperty != null) refreshIcon(getData());
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (dataProperty != null) refreshIcon(getData());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        int saveCount = canvas.save();
+        canvas.clipRect(0, 0, getWidth(), getHeight());
         super.onDraw(canvas);
+        canvas.restoreToCount(saveCount);
         if (menu.isShowViewBoundaries() && !ghost) {
             boundaryPath.moveTo(0, 0);
             boundaryPath.lineTo(getWidth(), 0);

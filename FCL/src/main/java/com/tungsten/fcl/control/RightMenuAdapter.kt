@@ -31,12 +31,14 @@ enum class RightMenuCategory(@param:StringRes val titleRes: Int) {
     MOUSE(R.string.menu_settings_mouse),
     GAMEPAD(R.string.menu_settings_gamepad),
     GYRO(R.string.menu_settings_gyro),
+    MENU_VIEW(R.string.menu_view_settings),
     DEBUG(R.string.menu_settings_debug)
 }
 
 /** 右菜单功能项标签，交互回调按此分发 */
 enum class RightMenuTag {
     // 功能
+    MENU_SHOW_FPS, MENU_SHOW_RAM, MENU_SHOW_TIME,
     LOCK_VIEW, HIDE_VIEW, SHOW_FPS, OPEN_MULTIPLAYER, OPEN_QUICK_INPUT, OPEN_SEND_KEY, FULLSCREEN,
     SOFT_KEYBOARD_ADJUST, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, WINDOW_SCALE, CURSOR_OFFSET,
 
@@ -374,7 +376,10 @@ class RightMenuAdapter(
             )
         )
 
-        RightMenuCategory.DEBUG -> listOf(
+        RightMenuCategory.MENU_VIEW -> listOf(
+            Row.SwitchRow(R.string.menu_view_show_fps, { menuSetting.isMenuShowFps }, RightMenuTag.MENU_SHOW_FPS),
+            Row.SwitchRow(R.string.menu_view_show_ram, { menuSetting.isMenuShowRam }, RightMenuTag.MENU_SHOW_RAM),
+            Row.SwitchRow(R.string.menu_view_show_time, { menuSetting.isMenuShowTime }, RightMenuTag.MENU_SHOW_TIME),
             Row.SwitchRow(
                 R.string.menu_settings_lock_view,
                 { menuSetting.isLockMenuView },
@@ -384,7 +389,10 @@ class RightMenuAdapter(
                 R.string.menu_settings_hide_view,
                 { menuSetting.isHideMenuView },
                 RightMenuTag.HIDE_VIEW
-            ),
+            )
+        )
+
+        RightMenuCategory.DEBUG -> listOf(
             Row.SwitchRow(
                 R.string.menu_settings_show_memory,
                 { menuSetting.isShowMemory },
