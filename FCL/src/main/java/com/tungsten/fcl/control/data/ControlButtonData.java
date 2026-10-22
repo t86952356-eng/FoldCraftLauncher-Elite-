@@ -65,8 +65,22 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
      * files remain portable between installations.
      */
     private final StringProperty iconProperty = new SimpleStringProperty(this, "icon", "none");
-    private final IntegerProperty iconWidthProperty = new SimpleIntegerProperty(this, "iconWidth", 24);
-    private final IntegerProperty iconHeightProperty = new SimpleIntegerProperty(this, "iconHeight", 24);
+    private final IntegerProperty iconWidthProperty = new SimpleIntegerProperty(this, "iconWidth", 14);
+    private final IntegerProperty iconHeightProperty = new SimpleIntegerProperty(this, "iconHeight", 14);
+
+    private final IntegerProperty iconOffsetYProperty = new SimpleIntegerProperty(this, "iconOffsetY", 0);
+
+    public IntegerProperty iconOffsetYProperty() {
+        return iconOffsetYProperty;
+    }
+
+    public int getIconOffsetY() {
+        return iconOffsetYProperty.get();
+    }
+
+    public void setIconOffsetY(int offset) {
+        iconOffsetYProperty.set(Math.max(-96, Math.min(96, offset)));
+    }
 
     public StringProperty iconProperty() {
         return iconProperty;
@@ -167,6 +181,7 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
         iconProperty.addListener(listener);
         iconWidthProperty.addListener(listener);
         iconHeightProperty.addListener(listener);
+        iconOffsetYProperty.addListener(listener);
         styleProperty.addListener(listener);
         baseInfoProperty.addListener(listener);
         eventProperty.addListener(listener);
@@ -197,6 +212,7 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
         setIcon(source.getIcon());
         setIconWidth(source.getIconWidth());
         setIconHeight(source.getIconHeight());
+        setIconOffsetY(source.getIconOffsetY());
         setStyle(source.getStyle().clone());
         setBaseInfo(source.getBaseInfo().clone());
         setEvent(source.getEvent().clone());
@@ -239,6 +255,7 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
             obj.addProperty("icon", src.getIcon());
             obj.addProperty("iconWidth", src.getIconWidth());
             obj.addProperty("iconHeight", src.getIconHeight());
+            obj.addProperty("iconOffsetY", src.getIconOffsetY());
             obj.addProperty("style", src.getStyle().getName());
             obj.add("baseInfo", new BaseInfoData.Serializer().serialize(src.getBaseInfo(), null, null));
             obj.add("event", new ButtonEventData.Serializer().serialize(src.getEvent(), null, null));
@@ -256,8 +273,9 @@ public class ControlButtonData implements Cloneable, Observable, CustomControl {
 
             data.setText(Optional.ofNullable(get(obj, "text")).map(JsonElement::getAsString).orElse(""));
             data.setIcon(Optional.ofNullable(get(obj, "icon")).map(JsonElement::getAsString).orElse("none"));
-            data.setIconWidth(Optional.ofNullable(get(obj, "iconWidth")).map(JsonElement::getAsInt).orElse(24));
-            data.setIconHeight(Optional.ofNullable(get(obj, "iconHeight")).map(JsonElement::getAsInt).orElse(24));
+            data.setIconWidth(Optional.ofNullable(get(obj, "iconWidth")).map(JsonElement::getAsInt).orElse(14));
+            data.setIconHeight(Optional.ofNullable(get(obj, "iconHeight")).map(JsonElement::getAsInt).orElse(14));
+            data.setIconOffsetY(Optional.ofNullable(get(obj, "iconOffsetY")).map(JsonElement::getAsInt).orElse(0));
             if (!ButtonStyles.isInitialized()) {
                 ButtonStyles.init();
             }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="edit_button_icon_offset_y">إزاحة الأيقونة عموديًا</string>
+    <string name="menu_view_background_opacity">عتامة الخلفية</string>
+    <string name="menu_view_scale">الحجم الكلي</string>
+    <string name="menu_view_length">طول المستطيل</string>
+    <string name="settings_controller_font">تغيير خط أزرار التحكم</string>
+    <string name="settings_controller_font_desc">اختر خط TTF أو OTF لنصوص أزرار التحكم فقط. تُحفظ نسخة داخل التطبيق بعد إعادة التشغيل، وإعادة الضبط تسترجع الخط الأصلي.</string>
+    <string name="controller_font_applied">تم تطبيق خط أزرار التحكم</string>
+    <string name="controller_font_reset">تمت استعادة خط أزرار التحكم الأصلي</string>
+    <string name="controller_font_failed">تعذر تحميل الخط. اختر ملف TTF أو OTF صالحًا لا يتجاوز 20 ميبيبايت. لم يتغير الخط السابق.</string>
+    <string name="controller_icon_beetle">خنفساء</string>
+    <string name="controller_icon_capacitor">مكثف كهربائي (كابستر)</string>
+    <string name="controller_icon_minecraft_sword">سيف ماينكرافت</string>
+    <string name="controller_icon_minecraft_axe">فأس ماينكرافت</string>
+    <string name="controller_icon_minecraft_pickaxe">معول ماينكرافت</string>
+    <string name="controller_icon_globe">الكرة الأرضية</string>
+    <string name="controller_icon_gear">ترس الإعدادات</string>
+    <string name="controller_icon_motion_wave">خط ملتوي Motion</string>
+    <string name="controller_icon_recycle">إعادة التدوير</string>
+    <string name="controller_icon_shield">درع</string>
+    <string name="controller_icon_heart">قلب</string>
+    <string name="controller_icon_torch">شعلة</string>
+    <string name="controller_icon_potion">جرعة</string>
+    <string name="controller_icon_helmet">خوذة</string>
+    <string name="controller_icon_chest">صندوق</string>
+    <string name="controller_icon_shovel">مجرفة</string>
+    <string name="controller_icon_fishing_rod">صنارة صيد</string>
+    <string name="controller_icon_compass">بوصلة</string>
+    <string name="controller_icon_map">خريطة</string>
+    <string name="controller_icon_target">هدف</string>
+    <string name="controller_icon_lock">قفل</string>
+    <string name="controller_icon_unlock">فتح القفل</string>
+    <string name="controller_icon_volume">صوت</string>
+    <string name="controller_icon_pause">إيقاف مؤقت</string>
+</resources>

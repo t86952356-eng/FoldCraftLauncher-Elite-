@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -23,6 +24,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.tungsten.fcl.R;
 import com.tungsten.fcl.control.GameMenu;
+import com.tungsten.fcl.control.ControllerFont;
 import com.tungsten.fcl.control.ButtonStyleTransition;
 import com.tungsten.fcl.control.GameTextSender;
 import com.tungsten.fcl.control.GestureMode;
@@ -141,6 +143,7 @@ public class ControlButton extends AppCompatButton implements CustomView {
         setElevation(113.0f);
 
         setStateListAnimator(null);
+        ControllerFont.applyTo(this);
 
         boundaryPath = new Path();
         boundaryPaint = new Paint();
@@ -214,6 +217,7 @@ public class ControlButton extends AppCompatButton implements CustomView {
      * are stored in dp but are always clamped to this button's measured content
      * box, preventing an icon from escaping the controller button.
      */
+    private final Drawable iconSpacer = new ColorDrawable(Color.TRANSPARENT);
     private Drawable controllerIcon;
     private String controllerIconId;
 
@@ -250,13 +254,14 @@ public class ControlButton extends AppCompatButton implements CustomView {
         int height = Math.round(requestedHeight * scale);
         width = Math.max(1, width);
         height = Math.max(1, height);
-        if (getCompoundDrawables()[1] == drawable && drawable.getBounds().width() == width
+        if (getCompoundDrawables()[1] == iconSpacer && drawable.getBounds().width() == width
                 && drawable.getBounds().height() == height && getCompoundDrawablePadding() == drawablePadding) {
             return;
         }
         drawable.setBounds(0, 0, width, height);
         setCompoundDrawablePadding(drawablePadding);
-        setCompoundDrawables(null, drawable, null, null);
+        iconSpacer.setBounds(0, 0, width, height);
+        setCompoundDrawables(null, iconSpacer, null, null);
     }
 
     private void refreshBaseInfo(ControlButtonData data) {
@@ -345,6 +350,16 @@ public class ControlButton extends AppCompatButton implements CustomView {
         int saveCount = canvas.save();
         canvas.clipRect(0, 0, getWidth(), getHeight());
         super.onDraw(canvas);
+        if (controllerIcon != null && getCompoundDrawables()[1] == iconSpacer) {
+            int iconHeight = controllerIcon.getBounds().height();
+            float inset = Math.min(ConvertUtils.dip2px(getContext(), 2f), getHeight() / 2f);
+            float defaultTop = getTotalPaddingTop() - iconHeight - getCompoundDrawablePadding();
+            float offset = getData().getIconOffsetY() * getResources().getDisplayMetrics().density;
+            float top = com.tungsten.fcl.control.ControllerIconGeometry.top(
+                    defaultTop, offset, getHeight(), iconHeight, inset);
+            canvas.translate((getWidth() - controllerIcon.getBounds().width()) / 2f, top);
+            controllerIcon.draw(canvas);
+        }
         canvas.restoreToCount(saveCount);
         if (menu.isShowViewBoundaries() && !ghost) {
             boundaryPath.moveTo(0, 0);

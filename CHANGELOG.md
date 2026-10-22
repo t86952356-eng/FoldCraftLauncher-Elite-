@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.3.4.3] - 2026-10-22
+
+### العربية
+
+- إضافة 24 أيقونة جديدة: التسعة المطلوبة و15 شكلًا إضافيًا، مع إبقاء الأيقونات القديمة.
+- حجم الأيقونة الافتراضي 14dp، وإزاحة عمودية مستقلة محفوظة ومقيّدة داخل الزر.
+- إصلاح عرض إعدادات Normal وPressed الأصلية في Add Style مع الحفاظ على الحركة الاختيارية.
+- إضافة عتامة الخلفية والحجم الكلي وطول المستطيل في Menu View.
+- إضافة اختيار خط TTF/OTF لنصوص أزرار التحكم فقط، مع حفظ داخلي وإعادة ضبط.
+- تحديث ملف التسليم العربي بتاريخ التعديلات والدروس وخطوات البناء والنشر.
+
+### English
+
+- Add 24 controller icons (nine requested and fifteen extra) without removing existing icons.
+- Use 14dp defaults and a persisted, bounded independent vertical icon offset.
+- Restore visibility of the original Normal/Pressed style controls while retaining optional transitions.
+- Add Menu View background opacity, overall scale and rectangle length.
+- Import a private TTF/OTF font for controller text only, with restart persistence and reset.
+- Maintain the Arabic technical handoff and release history.
+
+### Compatibility and validation
+
+- Saved icon IDs and explicit dimensions remain unchanged; only missing/new dimensions default to 14dp. The offset defaults to zero.
+- Menu defaults remain 80% background opacity, 100% scale and 232dp logical length.
+- The selected font affects only controller buttons and previews, not the launcher UI; shared controller JSON does not embed the font.
+- Local Java/Kotlin compilation, targeted regression tests and Checkstyle are checked before publishing. GitHub Actions builds the five APK variants.
+- No physical Android device test was performed. In-game layout, font import/restart/reset and touch interaction still need a device smoke test.
+
 ## [1.3.4.2] - 2026-10-22
 
 ### العربية

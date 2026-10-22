@@ -146,6 +146,7 @@ public class ControlDirection extends RelativeLayout implements CustomView {
 
         for (AppCompatButton b : buttons) {
             b.setStateListAnimator(null);
+            com.tungsten.fcl.control.ControllerFont.applyTo(b);
         }
 
         boundaryPath = new Path();

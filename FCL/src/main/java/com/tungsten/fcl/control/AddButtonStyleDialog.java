@@ -35,6 +35,17 @@ import com.tungsten.fcllibrary.util.ConvertUtils;
 
 public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListener, TabLayout.OnTabSelectedListener {
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        android.util.DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
+        int margin = ConvertUtils.dip2px(getContext(), 24f);
+        if (getWindow() != null) {
+            getWindow().setLayout(Math.min(ConvertUtils.dip2px(getContext(), 480f), metrics.widthPixels - margin),
+                    Math.min(ConvertUtils.dip2px(getContext(), 640f), metrics.heightPixels - margin));
+        }
+    }
+
     private final Callback callback;
 
     private FCLButton positive;
@@ -71,6 +82,7 @@ public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListe
 
         editName = findViewById(R.id.name);
         button = findViewById(R.id.button);
+        ControllerFont.applyTo(button);
         tabLayout = findViewById(R.id.tab_layout);
         tabLayout.addOnTabSelectedListener(this);
 
@@ -368,7 +380,7 @@ public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListe
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        container.removeAllViewsInLayout();
+        container.removeAllViews();
         if (tab.getPosition() == 0) {
             container.addView(normalStyleLayout);
         } else {

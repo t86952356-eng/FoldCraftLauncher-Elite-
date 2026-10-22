@@ -50,6 +50,30 @@ class MenuSetting {
             changed()
         }
 
+    var menuBackgroundOpacity: Int = 80
+        set(value) {
+            val bounded = value.coerceIn(0, 100)
+            if (field == bounded) return
+            field = bounded
+            changed()
+        }
+
+    var menuScale: Int = 100
+        set(value) {
+            val bounded = value.coerceIn(50, 150)
+            if (field == bounded) return
+            field = bounded
+            changed()
+        }
+
+    var menuLength: Int = 232
+        set(value) {
+            val bounded = value.coerceIn(160, 360)
+            if (field == bounded) return
+            field = bounded
+            changed()
+        }
+
     var isMenuShowFps: Boolean = true
         set(value) {
             if (field == value) return
@@ -401,6 +425,9 @@ class MenuSetting {
                 addProperty("autoFitDist", src.autoFitDist)
                 addProperty("lockMenuView", src.isLockMenuView)
                 addProperty("hideMenuView", src.isHideMenuView)
+                addProperty("menuBackgroundOpacity", src.menuBackgroundOpacity)
+                addProperty("menuScale", src.menuScale)
+                addProperty("menuLength", src.menuLength)
                 addProperty("menuShowFps", src.isMenuShowFps)
                 addProperty("menuShowRam", src.isMenuShowRam)
                 addProperty("menuShowTime", src.isMenuShowTime)
@@ -460,6 +487,9 @@ class MenuSetting {
                 ms.autoFitDist = json["autoFitDist"]?.asInt ?: 0
                 ms.isLockMenuView = json["lockMenuView"]?.asBoolean ?: false
                 ms.isHideMenuView = json["hideMenuView"]?.asBoolean ?: false
+                ms.menuBackgroundOpacity = json["menuBackgroundOpacity"]?.asInt ?: 80
+                ms.menuScale = json["menuScale"]?.asInt ?: 100
+                ms.menuLength = json["menuLength"]?.asInt ?: 232
                 ms.isMenuShowFps = json["menuShowFps"]?.asBoolean ?: true
                 ms.isMenuShowRam = json["menuShowRam"]?.asBoolean ?: true
                 ms.isMenuShowTime = json["menuShowTime"]?.asBoolean ?: true

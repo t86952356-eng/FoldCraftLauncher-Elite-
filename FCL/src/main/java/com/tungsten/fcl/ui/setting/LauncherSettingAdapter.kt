@@ -55,6 +55,8 @@ enum class LauncherSettingTag {
     BACKGROUND_LIVE_SET,
     CURSOR_RESET,
     CURSOR_SET,
+    CONTROLLER_FONT_SET,
+    CONTROLLER_FONT_RESET,
     MENU_ICON_RESET,
     MENU_ICON_SET,
 
@@ -264,6 +266,15 @@ class LauncherSettingAdapter(
                     Triple(ICON_SET, R.string.button_set, LauncherSettingTag.CURSOR_SET)
                 ),
                 R.string.settings_launcher_cursor_desc,
+                group = SettingGroup.InGame
+            ),
+            Row.ButtonRow(
+                R.string.settings_controller_font,
+                listOf(
+                    Triple(ICON_RESET, R.string.button_reset, LauncherSettingTag.CONTROLLER_FONT_RESET),
+                    Triple(ICON_SET, R.string.button_set, LauncherSettingTag.CONTROLLER_FONT_SET)
+                ),
+                R.string.settings_controller_font_desc,
                 group = SettingGroup.InGame
             ),
             Row.ButtonRow(

@@ -46,9 +46,6 @@ class MenuView @JvmOverloads constructor(
     private val screenWidth = getScreenWidth()
     private val screenHeight = getScreenHeight()
 
-    private val defaultWidth = minOf(screenWidth, ConvertUtils.dip2px(context, 232f))
-    private val defaultHeight = ConvertUtils.dip2px(context, 48f)
-
     /** 点击判定位移阈值，随屏幕密度缩放（原硬编码 10px 在高密度屏上过小，点击易失灵） */
     private val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
 
@@ -118,6 +115,11 @@ class MenuView @JvmOverloads constructor(
 
     fun initPosition() {
         post {
+            if (!::gameMenu.isInitialized) return@post
+            val setting = gameMenu.menuSetting
+            val scale = setting.menuScale / 100f
+            val defaultWidth = minOf(screenWidth, ConvertUtils.dip2px(context, setting.menuLength * scale))
+            val defaultHeight = minOf(screenHeight, ConvertUtils.dip2px(context, 48f * scale))
             layoutParams.width = defaultWidth
             layoutParams.height = defaultHeight
             layoutParams = layoutParams
@@ -126,6 +128,11 @@ class MenuView @JvmOverloads constructor(
             y = (screenHeight * gameMenu.menuSetting.menuPositionY).toFloat()
                 .coerceIn(0f, (screenHeight - defaultHeight).coerceAtLeast(0).toFloat())
         }
+    }
+
+    fun refreshAppearance() {
+        initPosition()
+        invalidate()
     }
 
     private fun initIcon() {
@@ -165,13 +172,20 @@ class MenuView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (!::gameMenu.isInitialized) return
-        cardRect.set(1f * density, 1f * density, width - density, height - density)
-        areaPaint.color = if (pressed) 0xEE303844.toInt() else 0xCC161C26.toInt()
+        if (height <= 0 || width <= 0) return
+        val outerSave = canvas.save()
+        val drawScale = height / (48f * density)
+        canvas.scale(drawScale, drawScale)
+        val logicalWidth = width / drawScale
+        val logicalHeight = 48f * density
+        cardRect.set(density, density, logicalWidth - density, logicalHeight - density)
+        areaPaint.color = if (pressed) 0xFF303844.toInt() else 0xFF161C26.toInt()
+        areaPaint.alpha = gameMenu.menuSetting.menuBackgroundOpacity * 255 / 100
         canvas.drawRoundRect(cardRect, 10f * density, 10f * density, areaPaint)
 
         val cx = 24f * density
-        val cy = height / 2f
-        val radius = minOf(18f * density, height / 2f - 3f * density)
+        val cy = logicalHeight / 2f
+        val radius = minOf(18f * density, logicalHeight / 2f - 3f * density)
         val checkpoint = canvas.save()
         iconClip.reset()
         iconClip.addCircle(cx, cy, radius, Path.Direction.CW)
@@ -199,7 +213,7 @@ class MenuView @JvmOverloads constructor(
         canvas.drawCircle(cx, cy, radius, strokePaint)
 
         val textX = 50f * density
-        val available = (width - textX - 8f * density).coerceAtLeast(0f)
+        val available = (logicalWidth - textX - 8f * density).coerceAtLeast(0f)
         val titleBaseline = if (statsText.isEmpty()) {
             cy - (titlePaint.ascent() + titlePaint.descent()) / 2
         } else {
@@ -211,6 +225,7 @@ class MenuView @JvmOverloads constructor(
             val stats = TextUtils.ellipsize(statsText, statsPaint, available, TextUtils.TruncateAt.END)
             canvas.drawText(stats.toString(), textX, cy + 12f * density, statsPaint)
         }
+        canvas.restoreToCount(outerSave)
     }
 
     private fun updateGifPlayback() {

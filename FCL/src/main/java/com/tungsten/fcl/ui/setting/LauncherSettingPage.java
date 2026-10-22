@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.mio.ui.adapter.SpacingItemDecoration;
 import com.tungsten.fcl.R;
+import com.tungsten.fcl.control.ControllerFont;
 import com.tungsten.fcl.activity.MainActivity;
 import com.tungsten.fcl.databinding.PageSettingListBinding;
 import com.tungsten.fcl.setting.DownloadSource;
@@ -182,6 +183,17 @@ public class LauncherSettingPage extends FCLPage implements LauncherSettingAdapt
             case CURSOR_SET:
                 selectCursor();
                 break;
+            case CONTROLLER_FONT_SET:
+                selectControllerFont();
+                break;
+            case CONTROLLER_FONT_RESET:
+                try {
+                    ControllerFont.reset(getActivity());
+                    Toast.makeText(getActivity(), R.string.controller_font_reset, Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    Toast.makeText(getActivity(), R.string.controller_font_failed, Toast.LENGTH_LONG).show();
+                }
+                break;
             case MENU_ICON_SET:
                 selectMenuIcon();
                 break;
@@ -312,6 +324,26 @@ public class LauncherSettingPage extends FCLPage implements LauncherSettingAdapt
             }
             deleteCursorFile();
             files.get(0).copyTo(getActivity(), new File(FCLPath.FILES_DIR, "cursor." + type));
+        });
+    }
+
+    private void selectControllerFont() {
+        ArrayList<String> suffix = new ArrayList<>();
+        suffix.add(".ttf");
+        suffix.add(".otf");
+        MainActivity.getInstance().fileLauncher.launchSingleSelection(null, suffix, files -> {
+            if (files == null || files.isEmpty()) return;
+            thread(() -> {
+                boolean success = false;
+                try (java.io.InputStream input = files.get(0).openInputStream(getActivity())) {
+                    ControllerFont.install(getActivity(), input);
+                    success = true;
+                } catch (IOException | RuntimeException e) {
+                    LOG.log(Level.WARNING, "Cannot import controller font", e);
+                }
+                final int message = success ? R.string.controller_font_applied : R.string.controller_font_failed;
+                Schedulers.androidUIThread().execute(() -> Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show());
+            });
         });
     }
 

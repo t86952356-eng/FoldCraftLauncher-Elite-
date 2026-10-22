@@ -62,6 +62,7 @@ internal class EditButtonDetails(
         }
         bindNumberSeekBar(infoBinding.iconWidth, data.iconWidthProperty())
         bindNumberSeekBar(infoBinding.iconHeight, data.iconHeightProperty())
+        bindNumberSeekBar(infoBinding.iconOffsetY, data.iconOffsetYProperty())
 
         setupVisibilitySpinner(visibility)
         setupSizeTypeSpinner(sizeType)

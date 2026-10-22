@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="edit_button_icon_offset_y">Icon vertical offset</string>
+    <string name="menu_view_background_opacity">Background opacity</string>
+    <string name="menu_view_scale">Overall size</string>
+    <string name="menu_view_length">Rectangle length</string>
+    <string name="settings_controller_font">Change controller font</string>
+    <string name="settings_controller_font_desc">Choose a TTF/OTF font for control text only. A private copy survives restarts. Reset restores the original font.</string>
+    <string name="controller_font_applied">Controller font applied</string>
+    <string name="controller_font_reset">Original controller font restored</string>
+    <string name="controller_font_failed">Cannot load font. Choose a valid TTF/OTF file up to 20 MiB. The previous font is unchanged.</string>
+    <string name="controller_icon_beetle">Beetle</string>
+    <string name="controller_icon_capacitor">Capacitor</string>
+    <string name="controller_icon_minecraft_sword">Pixel sword</string>
+    <string name="controller_icon_minecraft_axe">Pixel axe</string>
+    <string name="controller_icon_minecraft_pickaxe">Pixel pickaxe</string>
+    <string name="controller_icon_globe">Globe</string>
+    <string name="controller_icon_gear">Settings gear</string>
+    <string name="controller_icon_motion_wave">Motion wave</string>
+    <string name="controller_icon_recycle">Recycling</string>
+    <string name="controller_icon_shield">Shield</string>
+    <string name="controller_icon_heart">Heart</string>
+    <string name="controller_icon_torch">Torch</string>
+    <string name="controller_icon_potion">Potion</string>
+    <string name="controller_icon_helmet">Helmet</string>
+    <string name="controller_icon_chest">Chest</string>
+    <string name="controller_icon_shovel">Shovel</string>
+    <string name="controller_icon_fishing_rod">Fishing rod</string>
+    <string name="controller_icon_compass">Compass</string>
+    <string name="controller_icon_map">Map</string>
+    <string name="controller_icon_target">Target</string>
+    <string name="controller_icon_lock">Lock</string>
+    <string name="controller_icon_unlock">Unlock</string>
+    <string name="controller_icon_volume">Volume</string>
+    <string name="controller_icon_pause">Pause</string>
+</resources>

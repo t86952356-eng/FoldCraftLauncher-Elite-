@@ -38,6 +38,7 @@ enum class RightMenuCategory(@param:StringRes val titleRes: Int) {
 /** 右菜单功能项标签，交互回调按此分发 */
 enum class RightMenuTag {
     // 功能
+    MENU_BACKGROUND_OPACITY, MENU_SCALE, MENU_LENGTH,
     MENU_SHOW_FPS, MENU_SHOW_RAM, MENU_SHOW_TIME,
     LOCK_VIEW, HIDE_VIEW, SHOW_FPS, OPEN_MULTIPLAYER, OPEN_QUICK_INPUT, OPEN_SEND_KEY, FULLSCREEN,
     SOFT_KEYBOARD_ADJUST, ITEM_BAR_WIDTH, ITEM_BAR_HEIGHT, WINDOW_SCALE, CURSOR_OFFSET,
@@ -377,6 +378,9 @@ class RightMenuAdapter(
         )
 
         RightMenuCategory.MENU_VIEW -> listOf(
+            Row.SeekBarRow(R.string.menu_view_background_opacity, 100, 0, { menuSetting.menuBackgroundOpacity }, RightMenuTag.MENU_BACKGROUND_OPACITY, "%"),
+            Row.SeekBarRow(R.string.menu_view_scale, 150, 50, { menuSetting.menuScale }, RightMenuTag.MENU_SCALE, "%"),
+            Row.SeekBarRow(R.string.menu_view_length, 360, 160, { menuSetting.menuLength }, RightMenuTag.MENU_LENGTH, "dp"),
             Row.SwitchRow(R.string.menu_view_show_fps, { menuSetting.isMenuShowFps }, RightMenuTag.MENU_SHOW_FPS),
             Row.SwitchRow(R.string.menu_view_show_ram, { menuSetting.isMenuShowRam }, RightMenuTag.MENU_SHOW_RAM),
             Row.SwitchRow(R.string.menu_view_show_time, { menuSetting.isMenuShowTime }, RightMenuTag.MENU_SHOW_TIME),

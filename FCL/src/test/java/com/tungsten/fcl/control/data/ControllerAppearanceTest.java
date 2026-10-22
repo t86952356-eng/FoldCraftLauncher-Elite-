@@ -94,4 +94,70 @@ public class ControllerAppearanceTest {
         assertTrue(old.isMenuShowRam());
         assertTrue(old.isMenuShowTime());
     }
+
+    @Test
+    public void newIconDefaultsAndVerticalOffsetSurviveEditorCopiesAndExport() {
+        ControlButtonData source = new ControlButtonData("source");
+        assertEquals(14, source.getIconWidth());
+        assertEquals(14, source.getIconHeight());
+        assertEquals(0, source.getIconOffsetY());
+        source.setIconWidth(24); // Do not overwrite dimensions saved by an older release.
+        source.setIconOffsetY(18);
+        ControlButtonData target = new ControlButtonData("target");
+        target.copySettingsFrom(source);
+        assertEquals("target", target.getId());
+        assertEquals(24, target.getIconWidth());
+        assertEquals(18, target.getIconOffsetY());
+        assertEquals(18, target.clone().getIconOffsetY());
+        assertEquals(18, gson.toJsonTree(target).getAsJsonObject().get("iconOffsetY").getAsInt());
+        target.setIconOffsetY(1000);
+        assertEquals(96, target.getIconOffsetY());
+        target.setIconOffsetY(-1000);
+        assertEquals(-96, target.getIconOffsetY());
+    }
+
+    @Test
+    public void menuAppearanceHasCompatibleDefaultsAndIndependentPersistence() {
+        MenuSetting legacy = gson.fromJson("{}", MenuSetting.class);
+        assertEquals(80, legacy.getMenuBackgroundOpacity());
+        assertEquals(100, legacy.getMenuScale());
+        assertEquals(232, legacy.getMenuLength());
+        legacy.setMenuBackgroundOpacity(0);
+        legacy.setMenuScale(125);
+        legacy.setMenuLength(310);
+        MenuSetting restored = gson.fromJson(gson.toJson(legacy), MenuSetting.class);
+        assertEquals(0, restored.getMenuBackgroundOpacity());
+        assertEquals(125, restored.getMenuScale());
+        assertEquals(310, restored.getMenuLength());
+        assertTrue(restored.isMenuShowFps());
+        restored.setMenuBackgroundOpacity(200);
+        restored.setMenuScale(-1);
+        restored.setMenuLength(10000);
+        assertEquals(100, restored.getMenuBackgroundOpacity());
+        assertEquals(50, restored.getMenuScale());
+        assertEquals(360, restored.getMenuLength());
+    }
+
+    @Test
+    public void movingIconClampsToButtonWithoutChangingTextLayout() {
+        assertEquals(10f, com.tungsten.fcl.control.ControllerIconGeometry.top(10, 0, 48, 14, 2), 0f);
+        assertEquals(20f, com.tungsten.fcl.control.ControllerIconGeometry.top(10, 10, 48, 14, 2), 0f);
+        assertEquals(32f, com.tungsten.fcl.control.ControllerIconGeometry.top(10, 100, 48, 14, 2), 0f);
+        assertEquals(2f, com.tungsten.fcl.control.ControllerIconGeometry.top(10, -100, 48, 14, 2), 0f);
+        assertEquals(0f, com.tungsten.fcl.control.ControllerIconGeometry.top(10, 100, 1, 1, 2), 0f);
+    }
+
+    @Test
+    public void iconCatalogAddsExactly24UniquePortableIds() {
+        java.util.Set<String> ids = new java.util.HashSet<>();
+        for (com.tungsten.fcl.control.ControllerIconRegistry.Icon icon :
+                com.tungsten.fcl.control.ControllerIconRegistry.INSTANCE.getIcons()) {
+            assertTrue(ids.add(icon.getId()));
+        }
+        assertEquals(53, ids.size()); // 28 original + 24 new + none.
+        assertTrue(ids.contains("capacitor"));
+        assertTrue(ids.contains("motion_wave"));
+        assertTrue(ids.contains("minecraft_pickaxe"));
+        assertEquals("none", com.tungsten.fcl.control.ControllerIconRegistry.INSTANCE.find("unknown-future-id").getId());
+    }
 }

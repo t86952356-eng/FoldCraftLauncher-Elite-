@@ -1391,6 +1391,18 @@ public class GameMenu implements MenuCallback, FCLBridgeCallback {
         int screenWidth = AndroidUtilKt.getScreenWidth();
         int screenHeight = AndroidUtilKt.getScreenHeight();
         switch (tag) {
+            case MENU_BACKGROUND_OPACITY:
+                menuSetting.setMenuBackgroundOpacity(progress);
+                menuView.refreshAppearance();
+                break;
+            case MENU_SCALE:
+                menuSetting.setMenuScale(progress);
+                menuView.refreshAppearance();
+                break;
+            case MENU_LENGTH:
+                menuSetting.setMenuLength(progress);
+                menuView.refreshAppearance();
+                break;
             case ITEM_BAR_WIDTH:
                 menuSetting.setItemBarWidth((int) (screenWidth / 100f * progress));
                 GameOption.GameOptionListener widthListener = gameItemBar.getOptionListener();

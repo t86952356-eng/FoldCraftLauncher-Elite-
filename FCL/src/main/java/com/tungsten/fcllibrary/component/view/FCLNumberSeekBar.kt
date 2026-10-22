@@ -103,7 +103,8 @@ class FCLNumberSeekBar @JvmOverloads constructor(
                     s.toFloatOrNull()?.let { (it * scale).roundToInt() }?.takeIf { it in min..max }?.let { progress = it }
                 }
                 dialog.appendTitle("(${displayValue(min)} ~ ${displayValue(max)})")
-                dialog.getEditText().inputType = EditorInfo.TYPE_NUMBER_FLAG_DECIMAL
+                dialog.getEditText().inputType = EditorInfo.TYPE_CLASS_NUMBER or EditorInfo.TYPE_NUMBER_FLAG_DECIMAL or
+                    (if (min < 0) EditorInfo.TYPE_NUMBER_FLAG_SIGNED else 0)
                 dialog.show()
                 return true
             }

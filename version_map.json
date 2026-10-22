@@ -1,6 +1,24 @@
 [
   {
     "type": "release",
+    "versionCode": 1343,
+    "versionName": "1.3.4.3",
+    "date": "2026.10.22",
+    "description": [
+      {
+        "lang": "en",
+        "text": "Add 24 controller icons (nine requested and fifteen extra) without removing existing icons.\nUse 14dp defaults and a persisted, bounded independent vertical icon offset.\nRestore visibility of the original Normal/Pressed style controls while retaining optional transitions.\nAdd Menu View background opacity, overall scale and rectangle length.\nImport a private TTF/OTF font for controller text only, with restart persistence and reset.\nMaintain the Arabic technical handoff and release history."
+      },
+      {
+        "lang": "ar",
+        "text": "إضافة 24 أيقونة جديدة: التسعة المطلوبة و15 شكلًا إضافيًا، مع إبقاء الأيقونات القديمة.\nحجم الأيقونة الافتراضي 14dp، وإزاحة عمودية مستقلة محفوظة ومقيّدة داخل الزر.\nإصلاح عرض إعدادات Normal وPressed الأصلية في Add Style مع الحفاظ على الحركة الاختيارية.\nإضافة عتامة الخلفية والحجم الكلي وطول المستطيل في Menu View.\nإضافة اختيار خط TTF/OTF لنصوص أزرار التحكم فقط، مع حفظ داخلي وإعادة ضبط.\nتحديث ملف التسليم العربي بتاريخ التعديلات والدروس وخطوات البناء والنشر."
+      }
+    ],
+    "netdiskUrl": "https://github.com/t86952356-eng/FoldCraftLauncher-Elite-/releases/download/1.3.4.3/FCL-release-1.3.4.3-all.apk",
+    "url": "https://github.com/t86952356-eng/FoldCraftLauncher-Elite-/releases/download/1.3.4.3/FCL-release-1.3.4.3-all.apk"
+  },
+  {
+    "type": "release",
     "versionCode": 1342,
     "versionName": "1.3.4.2",
     "date": "2026.10.22",
