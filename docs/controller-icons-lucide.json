@@ -283,5 +283,6 @@
       "source": "icons/move.svg",
       "upstream_sha256": "915074a1292f72d59165339b8b93f8d440c8d55b7116b52fca240b9ded5af74d"
     }
-  }
+  },
+  "android_path_compatibility": "1.3.4.5: SVG arc flags are expanded into separately spaced Android floats. Geometry, IDs, style and original upstream source digests are unchanged. Validate with python3 scripts/controller_vector_paths.py."
 }

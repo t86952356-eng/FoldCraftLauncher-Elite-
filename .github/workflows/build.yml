@@ -39,6 +39,11 @@ jobs:
           java-version: 17
           cache: "gradle"
 
+      - name: Validate Android controller vector paths
+        run: |
+          python3 -m unittest discover -s scripts/tests -v
+          python3 scripts/controller_vector_paths.py
+
       - name: Build release apk
         if: ${{ github.event_name != 'pull_request' }}
         run: |

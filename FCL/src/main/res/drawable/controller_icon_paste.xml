@@ -2,8 +2,8 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
   <!-- Lucide 24px/2px outline. Attribution: assets/licenses/lucide-LICENSE.txt. -->
   <path android:pathData="M11 14h10" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
-  <path android:pathData="M16 4h2a2 2 0 0 1 2 2v1.344" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+  <path android:pathData="M 16 4 h 2 a 2 2 0 0 1 2 2 v 1.344" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
   <path android:pathData="m17 18 4-4-4-4" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
-  <path android:pathData="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 1.793-1.113" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+  <path android:pathData="M 8 4 H 6 a 2 2 0 0 0 -2 2 v 14 a 2 2 0 0 0 2 2 h 12 a 2 2 0 0 0 1.793 -1.113" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
   <path android:pathData="M9 2H15Q16 2 16 3V5Q16 6 15 6H9Q8 6 8 5V3Q8 2 9 2Z" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
 </vector>

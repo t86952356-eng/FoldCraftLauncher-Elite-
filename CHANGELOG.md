@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.3.4.5] - 2026-10-27
+
+### العربية
+
+- إصلاح كراش فتح قائمة الأيقونات أو عرض زر السيف على Android بسبب دمج أعلام الأقواس في مسارات SVG.
+- تطبيع مسارات الأقواس في جميع الأيقونات إلى معاملات منفصلة متوافقة مع Android، دون تغيير الأشكال أو المعرّفات أو إعدادات المستخدم.
+- إضافة اختبارات انحدار وفحص مسارات الأيقونات قبل كل بناء لمنع تكرار المشكلة.
+
+### English
+
+- Fix the controller icon list / sword button crash caused by compact SVG arc flags rejected by Android VectorDrawable.
+- Normalize arc paths across the icon catalog without changing geometry, IDs, styling or saved user settings.
+- Add regression tests and validate all 68 controller vector resources before every APK build.
+
+### Validation
+
+- Reproduced the supplied 1.3.4.4 sword path failure using Android float-token semantics.
+- Expanded SVG arc flags in 50 resources; 4 resources previously failed Android argument/flag validation. All 68 resources / 210 paths now pass.
+- Six Python regression tests pass; this validation runs before Gradle on all five build variants.
+- No physical-device runtime test was performed.
+
 ## [1.3.4.4] - 2026-10-27
 
 ### العربية

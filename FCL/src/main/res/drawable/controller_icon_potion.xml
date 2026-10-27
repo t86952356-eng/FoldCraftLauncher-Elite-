@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
   <!-- Lucide 24px/2px outline. Attribution: assets/licenses/lucide-LICENSE.txt. -->
-  <path android:pathData="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+  <path android:pathData="M 14 2 v 6 a 2 2 0 0 0 .245 .96 l 5.51 10.08 A 2 2 0 0 1 18 22 H 6 a 2 2 0 0 1 -1.755 -2.96 l 5.51 -10.08 A 2 2 0 0 0 10 8 V 2" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
   <path android:pathData="M6.453 15h11.094" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
   <path android:pathData="M8.5 2h7" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
 </vector>
