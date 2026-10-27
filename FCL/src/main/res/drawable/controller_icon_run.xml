@@ -1,1 +1,9 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24"><path android:pathData="M13.5,2.2 C14.8,2.2 15.8,3.2 15.8,4.5 C15.8,5.8 14.8,6.8 13.5,6.8 C12.2,6.8 11.2,5.8 11.2,4.5 C11.2,3.2 12.2,2.2 13.5,2.2 Z M10.2,7.2 L15,7.2 C16,7.2 16.8,7.7 17.4,8.5 L20.2,12.2 L18.3,13.6 L15.7,10.4 L14.5,13.2 L17.2,15.1 L20.1,20.2 L17.7,21.5 L15,16.9 L11.8,15.2 L10.2,18.2 L5.2,21 L3.8,18.8 L8,16.2 L10.5,10.5 L8.3,11.5 L6.5,14.2 L4.3,12.8 L6.5,9.5 Z" android:fillColor="#FFFFFFFF" android:fillType="evenOdd"/></vector>
+<?xml version='1.0' encoding='UTF-8'?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+  <!-- Original 24px/2px Lucide-style adaptation; not an official Lucide glyph. -->
+  <path android:pathData="M13 5a1.5 1.5 0 1 0 3 0a1.5 1.5 0 1 0-3 0" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+  <path android:pathData="m6 10 4-2 3 3 4 2 3-2" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+  <path android:pathData="m10 8-2 7 5 2 1 5" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+  <path android:pathData="m8 15-4 5H2" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+  <path android:pathData="m13 11 2-3" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+</vector>

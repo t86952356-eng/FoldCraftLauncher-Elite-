@@ -284,6 +284,12 @@ public class ControlButtonStyle implements Cloneable, Observable {
         animationDurationProperty.set(Math.max(50, Math.min(1000, duration)));
     }
 
+    private final CornerRadiusSettings cornerSettings = new CornerRadiusSettings(this::getCornerRadius, this::getCornerRadiusPressed);
+
+    public CornerRadiusSettings getCornerSettings() {
+        return cornerSettings;
+    }
+
     public ControlButtonStyle(String name) {
         this.nameProperty.set(name);
 
@@ -291,6 +297,7 @@ public class ControlButtonStyle implements Cloneable, Observable {
     }
 
     public void addPropertyChangedListener(InvalidationListener listener) {
+        cornerSettings.addListener(listener);
         animationEnabledProperty.addListener(listener);
         animationDurationProperty.addListener(listener);
         nameProperty.addListener(listener);
@@ -339,6 +346,7 @@ public class ControlButtonStyle implements Cloneable, Observable {
         style.setStrokeWidthPressed(getStrokeWidthPressed());
         style.setCornerRadiusPressed(getCornerRadiusPressed());
         style.setFillColorPressed(getFillColorPressed());
+        style.getCornerSettings().copyFrom(getCornerSettings());
         style.setAnimationEnabled(isAnimationEnabled());
         style.setAnimationDuration(getAnimationDuration());
         return style;
@@ -358,6 +366,7 @@ public class ControlButtonStyle implements Cloneable, Observable {
             obj.addProperty("strokeColor", src.getStrokeColor());
             obj.addProperty("strokeWidth", src.getStrokeWidth());
             obj.addProperty("cornerRadius", src.getCornerRadius());
+            obj.add("cornerRadii", src.getCornerSettings().toJson());
             obj.addProperty("fillColor", src.getFillColor());
             obj.addProperty("textColorPressed", src.getTextColorPressed());
             obj.addProperty("textSizePressed", src.getTextSizePressed());
@@ -392,6 +401,7 @@ public class ControlButtonStyle implements Cloneable, Observable {
             style.setCornerRadiusPressed(Optional.ofNullable(obj.get("cornerRadiusPressed")).map(JsonElement::getAsInt).orElse(100));
             style.setFillColorPressed(Optional.ofNullable(obj.get("fillColorPressed")).map(JsonElement::getAsInt).orElse(Color.LTGRAY));
 
+            style.getCornerSettings().readJson(obj.get("cornerRadii"));
             return style;
         }
     }

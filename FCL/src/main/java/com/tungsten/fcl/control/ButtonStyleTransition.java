@@ -18,6 +18,7 @@ public final class ButtonStyleTransition implements View.OnAttachStateChangeList
     private final GradientDrawable background = new GradientDrawable();
     private ControlButtonStyle style;
     private ValueAnimator animator;
+    private final float[] cornerRadii = new float[8];
     private float fraction;
     private float target;
 
@@ -67,7 +68,8 @@ public final class ButtonStyleTransition implements View.OnAttachStateChangeList
         background.setColor(ColorUtils.blendARGB(style.getFillColor(), style.getFillColorPressed(), fraction));
         background.setStroke(ConvertUtils.dip2px(button.getContext(), blend(style.getStrokeWidth(), style.getStrokeWidthPressed()) / 10f),
                 ColorUtils.blendARGB(style.getStrokeColor(), style.getStrokeColorPressed(), fraction));
-        background.setCornerRadius(ConvertUtils.dip2px(button.getContext(), blend(style.getCornerRadius(), style.getCornerRadiusPressed()) / 10f));
+        style.getCornerSettings().fillPixelRadii(cornerRadii, fraction, button.getResources().getDisplayMetrics().density);
+        background.setCornerRadii(cornerRadii);
         button.setTextColor(ColorUtils.blendARGB(style.getTextColor(), style.getTextColorPressed(), fraction));
         button.setTextSize(blend(style.getTextSize(), style.getTextSizePressed()));
         if (onFrame != null) onFrame.run();

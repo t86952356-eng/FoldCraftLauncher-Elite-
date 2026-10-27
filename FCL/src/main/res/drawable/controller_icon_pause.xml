@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
-    <path android:pathData="M5,3 L10,3 L10,21 L5,21 Z M14,3 L19,3 L19,21 L14,21 Z" android:fillColor="#FFFFFFFF" />
+  <!-- Lucide 24px/2px outline. Attribution: assets/licenses/lucide-LICENSE.txt. -->
+  <path android:pathData="M15 3H18Q19 3 19 4V20Q19 21 18 21H15Q14 21 14 20V4Q14 3 15 3Z" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+  <path android:pathData="M6 3H9Q10 3 10 4V20Q10 21 9 21H6Q5 21 5 20V4Q5 3 6 3Z" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
 </vector>

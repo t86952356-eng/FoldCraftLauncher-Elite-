@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controller_icon_gamepad">يد تحكم</string>
+    <string name="controller_icon_crosshair">مؤشر تصويب</string>
+    <string name="controller_icon_hand">يد</string>
+    <string name="controller_icon_rocket">صاروخ</string>
+    <string name="controller_icon_gem">جوهرة</string>
+    <string name="controller_icon_key">مفتاح</string>
+    <string name="controller_icon_door">باب مفتوح</string>
+    <string name="controller_icon_sun">شمس</string>
+    <string name="controller_icon_clock">ساعة</string>
+    <string name="controller_icon_download">تنزيل</string>
+    <string name="controller_icon_upload">رفع</string>
+    <string name="controller_icon_play">تشغيل</string>
+    <string name="controller_icon_headphones">سماعات</string>
+    <string name="controller_icon_battery">بطارية تشحن</string>
+    <string name="controller_icon_move">تحريك</string>
+</resources>

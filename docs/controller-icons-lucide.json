@@ -1,0 +1,287 @@
+{
+  "upstream": "https://github.com/lucide-icons/lucide",
+  "commit": "59d138796d9dd8970bf3e91479d4c499b45aed96",
+  "style": {
+    "viewport": 24,
+    "strokeWidth": 2,
+    "strokeLineCap": "round",
+    "strokeLineJoin": "round",
+    "color": "white"
+  },
+  "license_in_apk": "assets/licenses/lucide-LICENSE.txt",
+  "note": "Existing serialized IDs are unchanged. Six custom symbols retain their meaning with matching stroke rules. Adaptations are not presented as official Lucide icons.",
+  "icons": {
+    "none": {
+      "source": "icons/x.svg",
+      "upstream_sha256": "4a9cdab38fbb96162e7dace28e33f4ca0e49d8963a6162abc3d4691b7d675117"
+    },
+    "pickaxe": {
+      "source": "icons/pickaxe.svg",
+      "upstream_sha256": "b8a9ff74ad1cb09dcaa4b11d2155744a7b61e23d85e01bb4a930ea44aa0dcacc"
+    },
+    "eye": {
+      "source": "icons/eye.svg",
+      "upstream_sha256": "5bf90197dd7629cad64a2e48d1186a71559deb6121207d10e3dc5b19ebaffdcf"
+    },
+    "axe": {
+      "source": "icons/axe.svg",
+      "upstream_sha256": "8be1cd7066c1ebe19da4a8ee9b370a729dcdc26e856c2a2ea99f2735ac8ee1cc"
+    },
+    "sword": {
+      "source": "icons/sword.svg",
+      "upstream_sha256": "0649799fe0d04e803d0fc1b861f4adec694f8afbcc0946b8ec87bb18447efa3c"
+    },
+    "run": {
+      "source": "original Lucide-compatible adaptation",
+      "upstream_sha256": null
+    },
+    "stand": {
+      "source": "icons/person-standing.svg",
+      "upstream_sha256": "02960f63be14df8543ec5dabf5250a47509c35f177eb90ef9c864aa7acc1161a"
+    },
+    "boost": {
+      "source": "icons/chevrons-right.svg",
+      "upstream_sha256": "3491f9fe180bf75a058d480f32a0d26ff6a97c6c9a70315c77df7c6b75329d91"
+    },
+    "camera": {
+      "source": "icons/camera.svg",
+      "upstream_sha256": "ebbb3178dd80dfd942770a2237fe7bfc3515c55c7daa9d3666933a656d2790e3"
+    },
+    "keyboard": {
+      "source": "icons/keyboard.svg",
+      "upstream_sha256": "f509925ca81964ed06251ad4702e989bb81a566ffc74d15c2226b4f07ded67be"
+    },
+    "mouse": {
+      "source": "icons/mouse.svg",
+      "upstream_sha256": "e4238ad7b69d3c3d713fdc2284c8fb20c04781afe0be445539ce4f904c0a0e47"
+    },
+    "lightning": {
+      "source": "icons/zap.svg",
+      "upstream_sha256": "4c395891eab4d1e5627c5d414a16db037317cb2f12453de0f3a1130964c6d444"
+    },
+    "ghost": {
+      "source": "icons/ghost.svg",
+      "upstream_sha256": "7577ea4e1390a8a8203509dff037fa74791ecebb145cdc5e3f3349de2f009278"
+    },
+    "cube": {
+      "source": "icons/box.svg",
+      "upstream_sha256": "511862693d914d2bf1947c9ccc513595f2a256541f5dd4f6f9ac8383cd41ac4f"
+    },
+    "x_mark": {
+      "source": "icons/x.svg",
+      "upstream_sha256": "4a9cdab38fbb96162e7dace28e33f4ca0e49d8963a6162abc3d4691b7d675117"
+    },
+    "bow": {
+      "source": "icons/bow-arrow.svg",
+      "upstream_sha256": "8d022b3e9027f92c3d5995eeb7b4bee4b93abbd553178661366f721ba463cc34"
+    },
+    "arrow": {
+      "source": "icons/arrow-up-right.svg",
+      "upstream_sha256": "50b2503b9d11881142255466b7e3461d022b919735841c321d72003ac9959fe1"
+    },
+    "bag": {
+      "source": "icons/backpack.svg",
+      "upstream_sha256": "239fdca9bfe7d550be2dbbbe40f3c62f748a96235cde509d15dd32596e982f95"
+    },
+    "arrow_up": {
+      "source": "icons/arrow-up.svg",
+      "upstream_sha256": "8c22c25874c80bb062bef985d207d8f1d4a4d7847237d0a8cf720a3235968518"
+    },
+    "arrow_down": {
+      "source": "icons/arrow-down.svg",
+      "upstream_sha256": "2b641c7a59d39450edfed72067fcc9940a1a316a737346af23b4b9103c0689f2"
+    },
+    "copy": {
+      "source": "icons/copy.svg",
+      "upstream_sha256": "ea80e566c7a12628a447cb53179b19aea4f60b9143e2becd0d0f20bf260e5718"
+    },
+    "paste": {
+      "source": "icons/clipboard-paste.svg",
+      "upstream_sha256": "d2e4e6df0b2fecf97a95ef244f9031fb7c1deae0c9401df2a11d93379e8d361f"
+    },
+    "chat": {
+      "source": "icons/message-circle.svg",
+      "upstream_sha256": "146f39740fe50844394d56ae1f8821937655bcfff3842bf6fe8ffc0bcd324076"
+    },
+    "screen": {
+      "source": "icons/monitor.svg",
+      "upstream_sha256": "d1a443233345724859de8e4fb48968ba91e885e12ddbd710701548bd91b39428"
+    },
+    "pencil": {
+      "source": "icons/pencil.svg",
+      "upstream_sha256": "7e1ca7a6f5c1eb949671df762f2baadd32f5bd841d43153c3a15279af7d78d0c"
+    },
+    "star": {
+      "source": "icons/star.svg",
+      "upstream_sha256": "c59da86b889569387db28e69ad00a89f96af22863ad9eea9aa12c4876a14338c"
+    },
+    "wifi": {
+      "source": "icons/wifi.svg",
+      "upstream_sha256": "5c4c795d014fa95d1e1038362df44a0f0f32ded9cb08c833ae72419ebadc9a91"
+    },
+    "bluetooth": {
+      "source": "icons/bluetooth.svg",
+      "upstream_sha256": "f2bf3d88cf608834dc389f01b1ee41fdb7bf3656dabef69632c60d5498f3bf29"
+    },
+    "moon": {
+      "source": "icons/moon.svg",
+      "upstream_sha256": "205b959e940d5841f0ce1d09c933153da9d9c94130a54d5cc0c68c2af1d403da"
+    },
+    "beetle": {
+      "source": "icons/bug.svg",
+      "upstream_sha256": "c4fddf0d43b4c4f0b8fc52eb8810173c8d8bd25618034a70f162d85e8189d69d"
+    },
+    "capacitor": {
+      "source": "original Lucide-compatible adaptation",
+      "upstream_sha256": null
+    },
+    "minecraft_sword": {
+      "source": "original Lucide-compatible adaptation",
+      "upstream_sha256": null
+    },
+    "minecraft_axe": {
+      "source": "original Lucide-compatible adaptation",
+      "upstream_sha256": null
+    },
+    "minecraft_pickaxe": {
+      "source": "original Lucide-compatible adaptation",
+      "upstream_sha256": null
+    },
+    "globe": {
+      "source": "icons/globe.svg",
+      "upstream_sha256": "82c6b8fa0b8e8d775ec9becd86f74a4e50bff7bee4c81f7362de45348504f14d"
+    },
+    "gear": {
+      "source": "icons/settings.svg",
+      "upstream_sha256": "0ae27fd0f81999229e3127ac96c5b32edfea448e291d509e76212b917551d66b"
+    },
+    "motion_wave": {
+      "source": "original Lucide-compatible adaptation",
+      "upstream_sha256": null
+    },
+    "recycle": {
+      "source": "icons/recycle.svg",
+      "upstream_sha256": "21ce80a29ae558e16406dfb9143cf7b107c2d76b0174624328ff0e7abeaed7e2"
+    },
+    "shield": {
+      "source": "icons/shield.svg",
+      "upstream_sha256": "be32f6a86df7cbe43a83c439dd8849e5bcf5145e484d23420c20d8b98a78e82b"
+    },
+    "heart": {
+      "source": "icons/heart.svg",
+      "upstream_sha256": "70af5f30be9fcb500b852556b38dcdf8c04a4ba81fd262534fb0336bd39b3b52"
+    },
+    "torch": {
+      "source": "icons/flame.svg",
+      "upstream_sha256": "cede1462a46a7a3b3daf9d101f0b59484b1d882a4c42a75670810a6d4f8d42fb"
+    },
+    "potion": {
+      "source": "icons/flask-conical.svg",
+      "upstream_sha256": "a2ce857c159bef4c128a6d9f0b6dcbd6504ecf1a2a670ee220efd14fd032b561"
+    },
+    "helmet": {
+      "source": "icons/hard-hat.svg",
+      "upstream_sha256": "f2c7bcce1b99a42ad4b6f5041f055a4ce618c06a7927691c98d81c8c4fe4dde2"
+    },
+    "chest": {
+      "source": "icons/archive.svg",
+      "upstream_sha256": "78c732e34e232db63af06a2330b4448045cfdf49b48b59f2d31922df54c7bb17"
+    },
+    "shovel": {
+      "source": "icons/shovel.svg",
+      "upstream_sha256": "5a2407e1f1610c1fcb5feaaf49bd3869544e452326a79367927568dba655a6e1"
+    },
+    "fishing_rod": {
+      "source": "icons/fishing-rod.svg",
+      "upstream_sha256": "11a986ae138b96b56d0638ff1eb7642ab052fc748d608a0377742a2c34cd0f9e"
+    },
+    "compass": {
+      "source": "icons/compass.svg",
+      "upstream_sha256": "c5a4d147bf48424f48b514712dd61c1b07cb689612a7baef87c88870092c1659"
+    },
+    "map": {
+      "source": "icons/map.svg",
+      "upstream_sha256": "41300a8ef2c2a4cf36ec3f8a730bcb4754543889eb23b98e7435de7a0757752d"
+    },
+    "target": {
+      "source": "icons/target.svg",
+      "upstream_sha256": "96a6b16628825a1a207a77e9a5818f74c3e74ea3664783ff5c2a44e6347b90df"
+    },
+    "lock": {
+      "source": "icons/lock-keyhole.svg",
+      "upstream_sha256": "fc0b8b7590d1d9e9bb0112c5c2e15a78ade0bfeca6d6f8c79fbbe149236d74be"
+    },
+    "unlock": {
+      "source": "icons/lock-keyhole-open.svg",
+      "upstream_sha256": "9dbc41c9cd23e3bad8f3edb885e91d0ed514619ef632a2c5cd8a2e21ec37be35"
+    },
+    "volume": {
+      "source": "icons/volume-2.svg",
+      "upstream_sha256": "fb404f9c128a0579de67b399177631e5edb3502fdc247ceb30e8b15754b46071"
+    },
+    "pause": {
+      "source": "icons/pause.svg",
+      "upstream_sha256": "f122ec4ea7f5693a0b1baafa9c708b53980dc87b4aacb297c6e6f71c1a4c115c"
+    },
+    "gamepad": {
+      "source": "icons/gamepad-2.svg",
+      "upstream_sha256": "b0671de7afbebdafc4d655d867d9851947170b906fb187e749410039df867509"
+    },
+    "crosshair": {
+      "source": "icons/crosshair.svg",
+      "upstream_sha256": "ae9ed8583286ea03bffae85bb69aee5227540e588b0370cf185f2141ebe25e8d"
+    },
+    "hand": {
+      "source": "icons/hand.svg",
+      "upstream_sha256": "fe3771fa2f0a9a3c7736164c9a855beefacc02548084ac1d6fc8da8a8a9180b0"
+    },
+    "rocket": {
+      "source": "icons/rocket.svg",
+      "upstream_sha256": "2b7887d9a5623f2e5e4a5d32716f93829d61b458e03b6eae33a6df648b9eb855"
+    },
+    "gem": {
+      "source": "icons/gem.svg",
+      "upstream_sha256": "377618223555b2847b553a81f6974c76b7ce14d1207bcc0e98baa27a6a36d40e"
+    },
+    "key": {
+      "source": "icons/key-round.svg",
+      "upstream_sha256": "f8cdea843754ed360e36b04bf6aa2c2b3610935dd39ffc685a36c4d0a05be248"
+    },
+    "door": {
+      "source": "icons/door-open.svg",
+      "upstream_sha256": "1bddb273d0893f65778e2a58aa1af66c8129d8d7634a3552d95be66191ea7526"
+    },
+    "sun": {
+      "source": "icons/sun.svg",
+      "upstream_sha256": "a3955c8b0425fcc5c9ba12d2bdd77fe53b2cd5dd05e7742a56f342e996fb2ef8"
+    },
+    "clock": {
+      "source": "icons/clock.svg",
+      "upstream_sha256": "e9d3e3acf4d1c280fcf8092293439dc0a4756a908ceb859de144b12451cd1cb9"
+    },
+    "download": {
+      "source": "icons/download.svg",
+      "upstream_sha256": "3daeee13ded5a3afa2198b1bb4e2262d163922f97d96ac6ff9953e8ed4fe039d"
+    },
+    "upload": {
+      "source": "icons/upload.svg",
+      "upstream_sha256": "42816ee1fa0e9d3b82272a97615c1e562b0e9de64780ebf21963bc1db0ceffd1"
+    },
+    "play": {
+      "source": "icons/circle-play.svg",
+      "upstream_sha256": "10b5deb7c8fa5587897a1eb3d7ffc3c6c2f7b1b7f9a5b5080050aa529e9eb9ae"
+    },
+    "headphones": {
+      "source": "icons/headphones.svg",
+      "upstream_sha256": "7719585dafa921805aefc21fc3262bbcc621507610a653b84e1632236650b35a"
+    },
+    "battery": {
+      "source": "icons/battery-charging.svg",
+      "upstream_sha256": "6a95bf102235d7070121bb8eb21a4836fa7ea9f0dbe8327eadbdf94253acdcbd"
+    },
+    "move": {
+      "source": "icons/move.svg",
+      "upstream_sha256": "915074a1292f72d59165339b8b93f8d440c8d55b7116b52fca240b9ded5af74d"
+    }
+  }
+}

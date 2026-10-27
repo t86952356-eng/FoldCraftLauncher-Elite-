@@ -18,6 +18,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.tungsten.fcl.R;
 import com.tungsten.fcl.control.data.ButtonStyles;
 import com.tungsten.fcl.control.data.ControlButtonStyle;
+import com.tungsten.fcl.control.data.CornerRadiusSettings;
+import com.tungsten.fcllibrary.component.view.FCLSpinner;
 import com.tungsten.fcllibrary.component.dialog.EditDialog;
 import com.tungsten.fclcore.fakefx.beans.binding.Bindings;
 import com.tungsten.fclcore.fakefx.beans.property.IntegerProperty;
@@ -28,10 +30,11 @@ import com.tungsten.fcllibrary.component.view.FCLButton;
 import com.tungsten.fcllibrary.component.view.FCLEditText;
 import com.tungsten.fcllibrary.component.view.FCLLinearLayout;
 import com.tungsten.fcllibrary.component.view.FCLPreciseSeekBar;
-import com.tungsten.fcllibrary.component.view.FCLNumberSeekBar;
 import com.tungsten.fcllibrary.component.view.FCLTabLayout;
 import com.tungsten.fcllibrary.component.view.FCLTextView;
 import com.tungsten.fcllibrary.util.ConvertUtils;
+
+import java.util.Arrays;
 
 public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListener, TabLayout.OnTabSelectedListener {
 
@@ -41,8 +44,30 @@ public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListe
         android.util.DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
         int margin = ConvertUtils.dip2px(getContext(), 24f);
         if (getWindow() != null) {
-            getWindow().setLayout(Math.min(ConvertUtils.dip2px(getContext(), 480f), metrics.widthPixels - margin),
+            int width = Math.min(ConvertUtils.dip2px(getContext(), 480f), metrics.widthPixels - margin);
+            getWindow().setLayout(width,
                     Math.min(ConvertUtils.dip2px(getContext(), 640f), metrics.heightPixels - margin));
+            int barWidth = Math.max(1, Math.min(ConvertUtils.dip2px(getContext(), 200f),
+                    width - ConvertUtils.dip2px(getContext(), 175f)));
+            fitPreciseBars(normalStyleLayout, barWidth);
+            fitPreciseBars(pressedStyleLayout, barWidth);
+            FCLPreciseSeekBar duration = findViewById(R.id.animation_duration);
+            android.view.ViewGroup.LayoutParams params = duration.getLayoutParams();
+            params.width = barWidth;
+            duration.setLayoutParams(params);
+        }
+    }
+
+    private void fitPreciseBars(android.view.ViewGroup parent, int width) {
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            if (child instanceof FCLPreciseSeekBar) {
+                android.view.ViewGroup.LayoutParams params = child.getLayoutParams();
+                params.width = width;
+                child.setLayoutParams(params);
+            } else if (child instanceof android.view.ViewGroup) {
+                fitPreciseBars((android.view.ViewGroup) child, width);
+            }
         }
     }
 
@@ -94,16 +119,20 @@ public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListe
         previewTransition = new ButtonStyleTransition(button, null);
         setOnDismissListener(dialog -> previewTransition.cancel());
         CompoundButton animationEnabled = findViewById(R.id.animation_enabled);
-        FCLNumberSeekBar animationDuration = findViewById(R.id.animation_duration);
+        FCLPreciseSeekBar animationDuration = findViewById(R.id.animation_duration);
+        FCLTextView animationDurationText = findViewById(R.id.animation_duration_text);
         animationEnabled.setChecked(style.isAnimationEnabled());
-        animationDuration.addProgressListener();
+        findViewById(R.id.animation_toggle_row).setOnClickListener(v -> animationEnabled.performClick());
         animationDuration.setProgress(style.getAnimationDuration());
-        animationDuration.setEnabled(style.isAnimationEnabled());
+        animationDuration.setDisableValue(!style.isAnimationEnabled());
         animationEnabled.setOnCheckedChangeListener((view, checked) -> {
             style.setAnimationEnabled(checked);
-            animationDuration.setEnabled(checked);
+            animationDuration.setDisableValue(!checked);
         });
         style.animationDurationProperty().bindBidirectional(animationDuration.progressProperty());
+        animationDurationText.stringProperty().bind(Bindings.createStringBinding(
+                () -> animationDuration.getProgress() + "ms", animationDuration.progressProperty()));
+        animationDurationText.setOnClickListener(v -> openBoundedNumberDialog(context, animationDuration.progressProperty(), 50, 1000, 1));
         editName.setText(style.getName());
         style.nameProperty().bind(editName.stringProperty());
         changeButtonStyle();
@@ -336,7 +365,38 @@ public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListe
             });
         }
 
+        bindCornerRadiusMode(normalStyleLayout, false);
+        bindCornerRadiusMode(pressedStyleLayout, true);
         container.addView(normalStyleLayout);
+    }
+
+    private void bindCornerRadiusMode(FCLLinearLayout layout, boolean pressed) {
+        CornerRadiusSettings settings = style.getCornerSettings();
+        FCLSpinner<String> mode = layout.findViewById(R.id.corner_radius_mode);
+        mode.setItems(Arrays.asList(getContext().getString(R.string.style_corner_simple),
+                getContext().getString(R.string.style_corner_advanced)));
+        View simple = layout.findViewById(R.id.corner_radius_simple_row);
+        View advanced = layout.findViewById(R.id.corner_radius_advanced);
+        int[] bars = {R.id.corner_top_left, R.id.corner_top_right, R.id.corner_bottom_right, R.id.corner_bottom_left};
+        int[] labels = {R.id.corner_top_left_text, R.id.corner_top_right_text, R.id.corner_bottom_right_text, R.id.corner_bottom_left_text};
+        for (int i = 0; i < 4; i++) {
+            FCLPreciseSeekBar bar = layout.findViewById(bars[i]);
+            FCLTextView value = layout.findViewById(labels[i]);
+            bar.setProgress(settings.getRadius(pressed, i));
+            settings.radiusProperty(pressed, i).bindBidirectional(bar.progressProperty());
+            value.stringProperty().bind(Bindings.createStringBinding(() -> bar.getProgress() / 10f + " dp", bar.progressProperty()));
+            value.setOnClickListener(v -> openBoundedNumberDialog(getContext(), bar.progressProperty(), 0, 500, 10));
+        }
+        Runnable update = () -> {
+            boolean isAdvanced = CornerRadiusSettings.ADVANCED.equals(settings.getMode(pressed));
+            mode.setSelection(isAdvanced ? 1 : 0);
+            simple.setVisibility(isAdvanced ? View.GONE : View.VISIBLE);
+            advanced.setVisibility(isAdvanced ? View.VISIBLE : View.GONE);
+        };
+        mode.setOnItemSelectedListener((index, item) -> settings.setMode(pressed,
+                index == 1 ? CornerRadiusSettings.ADVANCED : CornerRadiusSettings.SIMPLE));
+        settings.modeProperty(pressed).addListener(observable -> update.run());
+        update.run();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -396,6 +456,19 @@ public class AddButtonStyleDialog extends FCLDialog implements View.OnClickListe
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    private void openBoundedNumberDialog(Context context, IntegerProperty property, int min, int max, int scale) {
+        EditDialog dialog = new EditDialog(context, text -> {
+            try {
+                float value = Float.parseFloat(text) * scale;
+                if (Float.isFinite(value) && value >= min && value <= max) property.set(Math.round(value));
+            } catch (NumberFormatException ignored) {
+            }
+        });
+        dialog.appendTitle("(" + min / (float) scale + " ~ " + max / (float) scale + ")");
+        dialog.getEditText().setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
+        dialog.show();
     }
 
     private void openTextEditDialog(Context context, IntegerProperty property, boolean isPercentage) {

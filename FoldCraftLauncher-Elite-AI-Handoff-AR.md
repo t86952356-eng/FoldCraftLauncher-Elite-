@@ -1,3 +1,11 @@
+# أحدث تحديث — 1.3.4.4 — 2026-10-27
+
+> **اقرأ هذا القسم والملحق الأخير أولًا.** يجري تجهيز تحديث 1.3.4.4 بناءً على ملف «طلبات_جديده.txt» فقط. نُفّذت التعديلات الجديدة محليًا واجتازت الاختبارات المستهدفة الأولية، لكن لا تعتبر APK أو Release هذا التحديث منشورًا حتى تُضاف نتائج التحقق النهائية في آخر الملف. جميع الأقسام السابقة محفوظة كسجل تاريخي.
+>
+> ألغى المستخدم العمل على حزمة الأيقونات التجريبية السابقة وصورة المعاينة. **لا تستخدم تلك التجارب في المشروع.** الطلب الجديد هو إعادة بناء كتالوج الأيقونات كاملًا بأسلوب Lucide وإضافة15 أيقونة، وتقويس زوايا متقدم، وتصغير عناصر الحركة، وتجديد Menu View دون حركات أو تأثيرات جديدة، ثم رفع السورس وبناء APK ونشر Release وتحديث هذا الملف وإرساله.
+
+---
+
 # تحديث ملف التسليم — FoldCraftLauncher-Elite — 2026-10-22
 
 > **اقرأ هذا الملخص أولًا:** الأقسام الأصلية أدناه محفوظة كسجل تاريخي حتى 1.3.4.1، وليست وصفًا لأحدث حالة. أُنجز ونُشر بعدها 1.3.4.2. **أُنجز ونُشر 1.3.4.3** بناءً على طلب المستخدم الصريح بالتعديل والبناء ونشر Release؛ نجحت فحوصه وبناؤه، وتحققت النسخ الخمس وتوقيع arm64. راجع سجل التحقق النهائي في نهاية هذا الملف.
@@ -850,3 +858,173 @@ git ls-remote origin 'refs/tags/1.3.4.3*'
 ### تحديث التوثيق بعد النشر
 
 هذا الملحق وملخص بداية الملف يُرفعان كتحديث MD فقط بعد نجاح الإصدار، ثم تُسلَّم نسخة محدثة للمستخدم. سيصبح main متقدمًا على Commit الإصدار بدفعة توثيق؛ هذا مقصود. **لا تحرّك Tag 1.3.4.3 إلى دفعة MD ولا تعِد نشر APKs دون تعديل فعلي ورقم إصدار جديد.** Workflow النشر يفحص وجود assets ويتخطى البناء المتكرر للنسخة نفسها. عند متابعة محادثة جديدة اقرأ الحالة الحية أولًا، وتحقّق من اتصال GitHub وصلاحياته، ثم انتظر طلب المستخدم التالي؛ لا تعِد تنفيذ هذا التحديث.
+
+
+---
+
+# ملحق تحديث 1.3.4.4 — 2026-10-27
+
+## 1. الطلب المعتمد
+
+المصدر هو ملف المستخدم «طلبات_جديده.txt» فقط. ألغى المستخدم تجربة الأيقونات السابقة؛ لم تُنقل صورتها أو ملفات الحزمة التجريبية إلى المشروع.
+
+- إعادة تصميم جميع Icons بأسلوب Lucide، وإضافة 15 أيقونة جديدة.
+- إضافة Corner Radius Mode فوق Corner radius: وضع Simple افتراضي للسلوك القديم، ووضع Advanced بأربعة أشرطة للزوايا الأربع. يدعم المحرر Normal وPressed كلًا على حدة.
+- تصغير مفتاح Enable animation transition وشريط مدته، مع الحفاظ على منطق الحركة الحالي ومدى 50–1000ms.
+- تجديد Menu View بشكل Modern، دون حركات أو ظلال أو تأثيرات جديدة.
+- رفع السورس مباشرة، وبناء APK ونشر Release، وتحديث MD وإرساله للمستخدم.
+
+## 2. أساس المصدر والتوافق
+
+- أساس main: `fabafac37c7d3ab0ff404fb83be552ec00209845`، وهو توثيق الإصدار 1.3.4.3.
+- الإصدار السابق 1.3.4.3 / code1343، والجديد 1.3.4.4 / code1344.
+- لم يتغير اسم package أو مفتاح التوقيع أو الأسرار أو Workflows في هذا التحديث.
+- بقيت معرّفات الأيقونات الـ53 السابقة كما هي: 52 رسمًا +none. أُضيفت 15 فقط، فأصبح الكتالوج 68 خيارًا: 67 رسمًا +none.
+- بقيت الميزات السابقة: الحجم الافتراضي للأيقونة 14dp، وإزاحة iconOffsetY، وخط التحكم الخاص، والتحكم بعتامة Menu View وحجمها وطولها وموقعها.
+- جميع معرّفات الحقول الأصلية الـ15 في قالب view_button_style محفوظة؛ لم تُحذف إعدادات النص أو الألوان أو الحدود القديمة.
+
+## 3. الأيقونات ومصدرها وترخيصها
+
+- المصدر: https://github.com/lucide-icons/lucide
+- مرجع upstream المثبت: `59d138796d9dd8970bf3e91479d4c499b45aed96`.
+- حُوّلت ملفات SVG إلى Android VectorDrawable XML: viewport24، خط أبيض2px، نهايات ووصلات مستديرة وخلفية شفافة. تحولت circle/rect/line/polyline إلى pathData؛ لا حاجة إلى SVG وقت التشغيل.
+- هناك 62 mapping إلى رسومات upstream، بما فيها رمز none، وستة تكييفات أصلية عند غياب مكافئ مباشر: `run`، `capacitor`، `motion_wave`، `minecraft_sword`، `minecraft_axe`، `minecraft_pickaxe`.
+- التكييفات الستة تتبع قواعد الخط نفسها، لكنها ليست رسومات Lucide رسمية. احتفظت معرّفات أدوات minecraft بطابعها المتدرج مع outline جديد، ولم تُحذف أو تُعد تسميتها.
+- سجل المصدر وSHA256 لكل SVG أصلي: `docs/controller-icons-lucide.json`.
+- نص ISC الكامل وإشعارات MIT/Feather الموروثة موجودة داخل أصول التطبيق: `FCL/src/main/assets/licenses/lucide-LICENSE.txt`. يجب أن تبقى داخل APK الموزع.
+
+الأشكال الـ15 الجديدة:
+
+- `gamepad` — يد تحكم / Gamepad — Lucide `gamepad-2`.
+- `crosshair` — مؤشر تصويب / Crosshair — Lucide `crosshair`.
+- `hand` — يد / Hand — Lucide `hand`.
+- `rocket` — صاروخ / Rocket — Lucide `rocket`.
+- `gem` — جوهرة / Gem — Lucide `gem`.
+- `key` — مفتاح / Key — Lucide `key-round`.
+- `door` — باب مفتوح / Open door — Lucide `door-open`.
+- `sun` — شمس / Sun — Lucide `sun`.
+- `clock` — ساعة / Clock — Lucide `clock`.
+- `download` — تنزيل / Download — Lucide `download`.
+- `upload` — رفع / Upload — Lucide `upload`.
+- `play` — تشغيل / Play — Lucide `circle-play`.
+- `headphones` — سماعات / Headphones — Lucide `headphones`.
+- `battery` — بطارية تشحن / Charging battery — Lucide `battery-charging`.
+- `move` — تحريك / Move — Lucide `move`.
+
+## 4. الزوايا: النموذج والحفظ والرسم
+
+المكوّن المشترك الجديد `CornerRadiusSettings.java` يخدم ControlButtonStyle وControlDirectionStyle.ButtonStyle، حتى لا تضيع الزوايا عند اختيار نمط زر لأزرار الاتجاه.
+
+- Simple يستعمل cornerRadius وcornerRadiusPressed القديمين دون تغيير.
+- Advanced يحفظ أربع قيم لكل حالة، بترتيب Android: أعلى اليسار TL، أعلى اليمين TR، أسفل اليمين BR، أسفل اليسار BL.
+- كل قيمة بوحدة عُشر dp، بمدى0..500، أي0..50dp، مثل شريط Corner radius القديم.
+- أول اختيار Advanced يرث قيمة Simple الحالية للزوايا الأربع. العودة إلى Simple ثم Advanced لا تمحو القيم المخصصة.
+- لا تُسلسل مصفوفة Advanced غير المهيأة؛ لذلك يظل أول تفعيل يرث Simple حتى بعد إعادة الفتح.
+- غياب الحقول الجديدة أو mode غير معروفة يرجع إلى Simple. تُعالج القيم غير الصالحة أو الناقصة بأمان.
+- يدعم المكوّن listeners والنسخ العميق والحفظ والتصدير. تبقى هوية الزر مستقلة عند نسخ إعداداته.
+
+مثال JSON:
+
+```json
+{
+  "cornerRadius": 100,
+  "cornerRadiusPressed": 100,
+  "cornerRadii": {
+    "normal": {"mode": "advanced", "radii": [0, 100, 200, 300]},
+    "pressed": {"mode": "simple"}
+  }
+}
+```
+
+`ButtonStyleTransition` يمزج كل زاوية بين Normal وPressed عبر ValueAnimator الموجود أصلًا. يستعمل مصفوفة float[8] معاد استعمالها: TL(x,y)،TR(x,y)،BR(x,y)،BL(x,y)، ولا ينشئ حركة جديدة أو حلقة رسم إضافية.
+
+جميع مسارات الرسم ذات الصلة تستعمل setCornerRadii: زر اللعبة، معاينة Add Style، ButtonStyleAdapter، وأزرار الاتجاه. وينقل AddDirectionStyleDialog الإعدادات عند اختيار نمط أو حفظه أو الرجوع عن الاختيار. clone وJSON للنموذج المتداخل يحتفظان بالقيم كذلك.
+
+## 5. واجهة الأنماط وتصغير الحركة
+
+- أضيف Corner Radius Mode فوق الصف القديم في view_button_style.xml. Simple يُظهر الصف القديم، وAdvanced يُظهر أربعة FCLPreciseSeekBar من النوع نفسه. تُربط كل نسخة ضمن قالب Normal أوPressed الخاص بها لتجنب خلط المعرفات.
+- استُبدل شريط المدة العريض بمكوّن FCLPreciseSeekBar المطابق لبقية حقول الستايل، مع قيمة ms صغيرة. صُغّر المفتاح المرئي وبقي صف نقر بارتفاع44dp.
+- يُقيد عرض الأشرطة إلى200dp أو مساحة الشاشة المتاحة، بما فيها شريط المدة، لتفادي الخروج من النافذة على الشاشات الصغيرة.
+- الإدخال الدقيق الجديد يحترم المدى: 0..50dp للزوايا، و50..1000ms للمدة، ويرفض NaN وInfinity.
+
+### مشكلة قياس الأشرطة المخفية وحلها
+
+كان FCLPreciseSeekBar يحسب مواضع أطفاله مرة واحدة في init. أشرطة Advanced تبدأ داخل صف GONE، ولذلك قد تكون أبعادها صفرًا وقت الحساب الأول. أضيف layoutControls يُستدعى من onLayout ليصحح عرض المسار ومواضع أزرار +/- عند الإظهار أو تغيير العرض. يمنع guard إعادة طلب layout عندما لم يتغير العرض. لا تتغير حدود الأشرطة أو أفعالها.
+
+## 6. Menu View الحديث
+
+- بطاقة داكنة مسطحة بزوايا14dp وحد خفيف، دون gradients أوshadows أو محرّك حركة جديد.
+- صورة PNG/GIF بحجم32dp وزوايا9dp، مع center-crop ودعم GIF ودورة الحياة السابقين.
+- العنوان نفسه Elite Luncher، وشارات مستقلة لـFPS وRAM والوقت، وسهم ثابت يدل على فتح القائمة الموجودة.
+- تطبق عتامة الخلفية على البطاقة وحدها وشاراتها؛ النص والصورة يظلان ظاهرين عند0%.
+- تُوزع الشارات بحسب عرض محتواها الطبيعي، لا بحصص متساوية تهدر المساحة. عند الطول الصغير تظهر القيم المختصرة مثل60 /42% /12:30 بدل استهلاك العرض في بادئات FPS وRAM. تبقى الأسماء والقيم كاملة في وصف الوصول، ويُستخدم ellipsis عند الضرورة.
+- بقي الارتفاع المنطقي48dp والتحكم في length/scale/opacity، ومفاتيح العدادات المستقلة، والموقع والسحب والقفل والنقر وفتح الدرجين.
+- قورنت دوال اللمس ودورة الحياة مع main وبقيت مطابقة بايتًا. لم يتغير shared FPS sampler، ولم تُضف ValueAnimator أوObjectAnimator أوsetShadowLayer إلى Menu View.
+
+## 7. الفحص والمراجعة
+
+- 21 اختبار JVM مستهدف:10 في ControllerAppearanceTest، و9 في CornerRadiusSettingsTest، و2 في FrameRateSamplerTest.
+- اختبارات الزوايا تشمل التوافق مع Simple القديم، أول دخول Advanced، استقلال الحالتين، التبديل دون فقدان القيم، JSON وclone العميق، ترتيب Android ومزج الزوايا، المدخلات غير الصالحة، نقل النمط لأزرار الاتجاه، إشعار المراقبين وحدود القيم.
+- تحقق وجود68 معرّفًا فريدًا، وبقاء جميع المعرفات السابقة، وسلامة بنية395 ملفXML.
+- عوينت الأيقونات الفعلية بعد تحويل XML إلىSVG. أُنشئت أيضًا معاينة لخمس حالات Menu View من قيم الرسم، وعولج أثناء المراجعة اختصار غير ضروري للعدادات ومشكلة المساحة في الطول160dp.
+- **معاينة Menu إعادة رسم ثابتة، وليست لقطة Android أو تجربة جهاز.** لا يعني نجاح JVM أو تجميع المشروع اكتمال اختبار الواجهة على جهاز فعلي.
+- تعاد الفحوص بعد تثبيت رقم الإصدار، ثم تُسجل نتائج Actions وAPK الفعلية في القسم الأخير؛ لا يُكتب نجاح النشر قبل التحقق.
+
+## 8. مسارات العمل وإجراءات البناء
+
+```text
+FCL/src/main/java/com/tungsten/fcl/control/data/CornerRadiusSettings.java
+FCL/src/main/java/com/tungsten/fcl/control/data/ControlButtonStyle.java
+FCL/src/main/java/com/tungsten/fcl/control/data/ControlDirectionStyle.java
+FCL/src/main/java/com/tungsten/fcl/control/AddButtonStyleDialog.java
+FCL/src/main/java/com/tungsten/fcl/control/AddDirectionStyleDialog.java
+FCL/src/main/java/com/tungsten/fcl/control/ButtonStyleTransition.java
+FCL/src/main/java/com/tungsten/fcl/control/ButtonStyleAdapter.java
+FCL/src/main/java/com/tungsten/fcl/control/ControllerIconRegistry.kt
+FCL/src/main/java/com/tungsten/fcl/control/view/ControlDirection.java
+FCL/src/main/java/com/tungsten/fcl/control/view/MenuView.kt
+FCL/src/main/java/com/tungsten/fcllibrary/component/view/FCLPreciseSeekBar.java
+FCL/src/main/res/layout/view_button_style.xml
+FCL/src/main/res/layout/dialog_add_button_style.xml
+FCL/src/main/res/drawable/controller_icon_*.xml
+FCL/src/main/res/values/controller_style_modes.xml
+FCL/src/main/res/values-ar/controller_style_modes.xml
+FCL/src/main/res/values/controller_icons_lucide.xml
+FCL/src/main/res/values-ar/controller_icons_lucide.xml
+FCL/src/main/assets/licenses/lucide-LICENSE.txt
+docs/controller-icons-lucide.json
+FCL/src/test/java/com/tungsten/fcl/control/data/CornerRadiusSettingsTest.java
+```
+
+
+```bash
+export JAVA_HOME=/data/tools/jdk17
+export ANDROID_HOME=/data/android-sdk
+export PATH="$JAVA_HOME/bin:$PATH"
+./gradlew :FCL:testFordebugUnitTest \
+  --tests com.tungsten.fcl.control.data.ControllerAppearanceTest \
+  --tests com.tungsten.fcl.control.data.CornerRadiusSettingsTest \
+  --tests com.tungsten.fclauncher.bridge.FrameRateSamplerTest \
+  checkstyle --no-daemon
+```
+
+- لا تشغّل updateMap عشوائيًا ولا تغير مفتاح التوقيع.
+- حدّث build.gradle وversion_map[0] وCHANGELOG والتسليم في دفعة المصدر نفسها؛ لأن push إلى main يبدأ Publish Release.
+- تحقق من النسخ الخمس وtag والتوقيع ورقم النسخة، ثم ارفع MD وحده بنتائج التحقق، دون تحريك tag. أوامر Workflows ودروس الإصدارات السابقة محفوظة في الأقسام التاريخية.
+
+### اختبارات الجهاز المتبقية
+
+1. Simple/Advanced في Normal وPressed؛ الحفظ وإعادة الفتح والتصدير والاستيراد وتغيير اتجاه الشاشة.
+2. أول إظهار للأشرطة بعد GONE، وتموضع المسار وأزرار +/- وتفاعلها عند اختلاف عرض الشاشة.
+3. انتقال الضغط بزوايا مختلفة، وتعطيل الحركات من إعدادات التطبيق والنظام، والتحقق أن إدخال اللعبة لا يتأخر.
+4. معاينة قائمة الأنماط وأزرار الاتجاه بعد اختيار نمط متقدم أو الرجوع عنه.
+5. Menu View بأطوال160/232/360dp، عتامة0/80/100%، وحجم50/100/150%؛ مع العدادات وPNG/GIF والسحب والقفل والنقر.
+6. التثبيت كتحديث فوق1.3.4.3 والتحقق من بقاء الملفات والخط والقياسات وظهور الأشكال الجديدة.
+
+## 9. سجل النشر والتحقق النهائي
+
+**حالة تجهيز المصدر:** التعديل محليًا جاهز. لا يوجد نشر APK مؤكد لهذا الإصدار في هذا السجل حتى الآن؛ تُضاف النتائج الفعلية لاحقًا. لم يُجرَ اختبار على جهاز Android فعلي.
+
+### فحوص نهائية قبل رفع دفعة المصدر
+
+نجحت إعادة الفحص بعد تثبيت versionName1.3.4.4 وcode1344: الاختبارات الـ21 دون فشل أو أخطاء، وCheckstyle وترجمةJava/Kotlin. زمن Gradle النهائي1m20s. فُحصت395مواردXML و68IDفريدًا، وبقيت جميع المعرفات القديمة. تأكد أنorigin/main ما زالfabafac37c7d3ab0ff404fb83be552ec00209845 قبل الرفع، وأنtag1.3.4.4 غير موجود. هذا سجل فحوص المصدر، وليس إثباتًا لنشرAPK بعد.

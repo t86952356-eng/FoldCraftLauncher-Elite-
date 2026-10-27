@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.3.4.4] - 2026-10-27
+
+### العربية
+
+- تجديد جميع أيقونات التحكم بأسلوب Lucide بخط أبيض موحّد، وإضافة 15 أيقونة جديدة؛ المجموع67 أيقونة إضافة إلى none، مع إبقاء معرّفات الأشكال القديمة.
+- إضافة Corner Radius Mode: Simple افتراضيًا، وAdvanced لضبط الزوايا الأربع بصورة مستقلة في حالتي Normal وPressed، مع الحفظ والنسخ والتصدير والحركة الحالية.
+- تصغير مفتاح Enable Animation Transition واستبدال شريط مدته بمكوّن FCLPreciseSeekBar المطابق لأشرطة الأنماط الأخرى.
+- تجديد Menu View ببطاقة حديثة مسطّحة، وصورة ذات زوايا مستديرة، وشارات للعدادات وسهم فتح ثابت، دون إضافة حركات أو ظلال أو مؤثرات جديدة.
+- الحفاظ على إعدادات حجم الأيقونة وإزاحتها والخط المخصص وعتامة القائمة وحجمها وطولها، وتحديث ملف التسليم العربي والترخيص.
+
+### English
+
+- Refresh all controller symbols with consistent white Lucide-style outlines and add 15 icons (67 icons plus none), preserving all saved IDs.
+- Add independent Simple/Advanced corner radius modes for Normal and Pressed states. Persist, clone, export and interpolate all four corners using the existing transition.
+- Make animation controls compact and use the same precise seekbar component as other style fields.
+- Redesign Menu View as a flat modern card with rounded-square PNG/GIF artwork, metric chips and a static chevron. No new animations, shadows or effect pipelines.
+- Preserve previous icon sizing/offsets, controller font and menu opacity/size/length settings. Maintain the Arabic handoff and bundle Lucide license notices.
+
+### Compatibility and validation
+
+- Legacy styles default to Simple mode. Advanced corner values retain their identity when switching modes and inherit the current Simple radius on first activation.
+- Android corner order is top-left, top-right, bottom-right, bottom-left. New values use the existing tenths-of-dp unit and 0–50dp slider range.
+- Direction-button style selection, previews, cloning and export preserve the new corner settings too.
+- Lucide source/attribution is recorded in docs/controller-icons-lucide.json; required notices are included in APK assets/licenses/lucide-LICENSE.txt. Six unavailable symbols are original stroke-compatible adaptations, not official Lucide glyphs.
+- Twenty-one targeted JVM tests, Java/Kotlin compilation, resource XML validation and Checkstyle are checked before publishing. GitHub Actions builds the five APK variants.
+- No physical Android device test was performed. Layout, gestures, GIF playback and switching between the new corner editor modes need an on-device smoke test.
+
 ## [1.3.4.3] - 2026-10-22
 
 ### العربية

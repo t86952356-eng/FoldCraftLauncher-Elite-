@@ -1,1 +1,6 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24"><path android:pathData="M12,4.5 C6.5,4.5 2.1,8 0.5,12 C2.1,16 6.5,19.5 12,19.5 C17.5,19.5 21.9,16 23.5,12 C21.9,8 17.5,4.5 12,4.5 Z M12,17 C9.2,17 7,14.8 7,12 C7,9.2 9.2,7 12,7 C14.8,7 17,9.2 17,12 C17,14.8 14.8,17 12,17 Z M12,9 C10.3,9 9,10.3 9,12 C9,13.7 10.3,15 12,15 C13.7,15 15,13.7 15,12 C15,10.3 13.7,9 12,9 Z" android:fillColor="#FFFFFFFF" android:fillType="evenOdd"/></vector>
+<?xml version='1.0' encoding='UTF-8'?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+  <!-- Lucide 24px/2px outline. Attribution: assets/licenses/lucide-LICENSE.txt. -->
+  <path android:pathData="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+  <path android:pathData="M9 12a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" android:fillColor="#00000000" android:strokeColor="#FFFFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"/>
+</vector>

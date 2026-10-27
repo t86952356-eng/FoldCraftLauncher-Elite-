@@ -59,11 +59,27 @@ class MenuView @JvmOverloads constructor(
     private var gifTarget: CustomViewTarget<MenuView, GifDrawable>? = null
     private val density = resources.displayMetrics.density
     private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.WHITE
+        color = 0xFF64748B.toInt()
         style = Paint.Style.STROKE
-        strokeWidth = 1.5f * density
+        strokeWidth = 1f * density
     }
     private val areaPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeWidth = density
+    }
+    private val chipPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val affordancePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        color = 0xFFCBD5E1.toInt()
+        style = Paint.Style.STROKE
+        strokeWidth = 1.6f * density
+        strokeCap = Paint.Cap.ROUND
+        strokeJoin = Paint.Join.ROUND
+    }
+    private val affordancePath = Path()
+    private val avatarRect = RectF()
+    private val chipRect = RectF()
+    private val metricWidths = FloatArray(3)
     private val iconPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
     private val titlePaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
@@ -71,13 +87,14 @@ class MenuView @JvmOverloads constructor(
         typeface = android.graphics.Typeface.DEFAULT_BOLD
     }
     private val statsPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Color.LTGRAY
+        color = 0xFFE2E8F0.toInt()
         textSize = 9f * resources.displayMetrics.scaledDensity
     }
     private val iconClip = Path()
     private val cardRect = RectF()
     private val imageRect = RectF()
-    private var statsText = ""
+    private var statsValues: List<String> = emptyList()
+    private var compactStatsValues: List<String> = emptyList()
     private val statsTick = object : Runnable {
         override fun run() {
             refreshStats()
@@ -96,17 +113,28 @@ class MenuView @JvmOverloads constructor(
         if (!::gameMenu.isInitialized) return
         val setting = gameMenu.menuSetting
         val values = mutableListOf<String>()
-        if (setting.isMenuShowFps) values += "FPS ${if (gameMenu.isSimulated) 0 else FCLBridge.getFps()}"
+        val compact = mutableListOf<String>()
+        if (setting.isMenuShowFps) {
+            val fps = if (gameMenu.isSimulated) 0 else FCLBridge.getFps()
+            values += "FPS $fps"
+            compact += fps.toString()
+        }
         if (setting.isMenuShowRam) {
             val total = getTotalMemory(context)
             val used = getUsedMemory(context)
             val percent = if (total > 0) (used * 100 / total).coerceIn(0, 100) else 0
             values += context.getString(R.string.menu_view_ram_value, percent)
+            compact += "$percent%"
         }
         if (setting.isMenuShowTime) {
-            values += DateFormat.getTimeFormat(context).format(java.util.Date())
+            val time = DateFormat.getTimeFormat(context).format(java.util.Date())
+            values += time
+            compact += time
         }
-        statsText = values.joinToString("  •  ")
+        statsValues = values
+        compactStatsValues = compact
+        contentDescription = context.getString(R.string.menu_view_title) +
+            if (values.isEmpty()) "" else ": " + values.joinToString(", ")
         invalidate()
         if (isAttachedToWindow && isShown && windowVisibility == VISIBLE && values.isNotEmpty()) {
             postDelayed(statsTick, 1000L)
@@ -171,36 +199,40 @@ class MenuView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (!::gameMenu.isInitialized) return
-        if (height <= 0 || width <= 0) return
+        if (!::gameMenu.isInitialized || height <= 0 || width <= 0) return
         val outerSave = canvas.save()
         val drawScale = height / (48f * density)
         canvas.scale(drawScale, drawScale)
         val logicalWidth = width / drawScale
-        val logicalHeight = 48f * density
-        cardRect.set(density, density, logicalWidth - density, logicalHeight - density)
-        areaPaint.color = if (pressed) 0xFF303844.toInt() else 0xFF161C26.toInt()
-        areaPaint.alpha = gameMenu.menuSetting.menuBackgroundOpacity * 255 / 100
-        canvas.drawRoundRect(cardRect, 10f * density, 10f * density, areaPaint)
+        val cy = 24f * density
+        val opacity = gameMenu.menuSetting.menuBackgroundOpacity / 100f
 
-        val cx = 24f * density
-        val cy = logicalHeight / 2f
-        val radius = minOf(18f * density, logicalHeight / 2f - 3f * density)
+        // Flat modern card: no shadows, gradients or new animation/effect pipeline.
+        cardRect.set(density, density, logicalWidth - density, 47f * density)
+        areaPaint.color = if (pressed) 0xFF263346.toInt() else 0xFF111B29.toInt()
+        areaPaint.alpha = (opacity * 255).toInt()
+        canvas.drawRoundRect(cardRect, 14f * density, 14f * density, areaPaint)
+        borderPaint.color = 0xFF718096.toInt()
+        borderPaint.alpha = (opacity * 100).toInt()
+        canvas.drawRoundRect(cardRect, 14f * density, 14f * density, borderPaint)
+
+        avatarRect.set(8f * density, 8f * density, 40f * density, 40f * density)
         val checkpoint = canvas.save()
         iconClip.reset()
-        iconClip.addCircle(cx, cy, radius, Path.Direction.CW)
+        iconClip.addRoundRect(avatarRect, 9f * density, 9f * density, Path.Direction.CW)
         canvas.clipPath(iconClip)
-        areaPaint.color = Color.DKGRAY
-        canvas.drawCircle(cx, cy, radius, areaPaint)
-        // Center-crop inside the circular clip, for both PNG and animated GIF.
+        areaPaint.color = 0xFF263346.toInt()
+        canvas.drawRect(avatarRect, areaPaint)
+        // Preserve center-cropped PNG/GIF support and the existing GIF lifecycle.
         val bitmap = icon
         val animated = gif
         val sourceWidth = animated?.intrinsicWidth ?: bitmap?.width ?: 0
         val sourceHeight = animated?.intrinsicHeight ?: bitmap?.height ?: 0
         if (sourceWidth > 0 && sourceHeight > 0) {
-            val scale = maxOf(radius * 2 / sourceWidth, radius * 2 / sourceHeight)
+            val scale = maxOf(32f * density / sourceWidth, 32f * density / sourceHeight)
             val halfWidth = sourceWidth * scale / 2f
             val halfHeight = sourceHeight * scale / 2f
+            val cx = 24f * density
             imageRect.set(cx - halfWidth, cy - halfHeight, cx + halfWidth, cy + halfHeight)
             if (animated != null) {
                 animated.setBounds(imageRect.left.toInt(), imageRect.top.toInt(), imageRect.right.toInt(), imageRect.bottom.toInt())
@@ -210,21 +242,58 @@ class MenuView @JvmOverloads constructor(
             }
         }
         canvas.restoreToCount(checkpoint)
-        canvas.drawCircle(cx, cy, radius, strokePaint)
+        canvas.drawRoundRect(avatarRect, 9f * density, 9f * density, strokePaint)
 
         val textX = 50f * density
-        val available = (logicalWidth - textX - 8f * density).coerceAtLeast(0f)
-        val titleBaseline = if (statsText.isEmpty()) {
+        val available = (logicalWidth - textX - 27f * density).coerceAtLeast(0f)
+        val titleBaseline = if (statsValues.isEmpty()) {
             cy - (titlePaint.ascent() + titlePaint.descent()) / 2
         } else {
-            cy - 3f * density
+            20f * density
         }
         val title = TextUtils.ellipsize(context.getString(R.string.menu_view_title), titlePaint, available, TextUtils.TruncateAt.END)
         canvas.drawText(title.toString(), textX, titleBaseline, titlePaint)
-        if (statsText.isNotEmpty()) {
-            val stats = TextUtils.ellipsize(statsText, statsPaint, available, TextUtils.TruncateAt.END)
-            canvas.drawText(stats.toString(), textX, cy + 12f * density, statsPaint)
+
+        if (statsValues.isNotEmpty()) {
+            val gap = 4f * density
+            val remaining = (available - gap * (statsValues.size - 1)).coerceAtLeast(0f)
+            var labels = statsValues
+            var naturalTotal = 0f
+            for (i in labels.indices) {
+                metricWidths[i] = statsPaint.measureText(labels[i]) + 8f * density
+                naturalTotal += metricWidths[i]
+            }
+            // Narrow cards keep the values (60 / 42% / time) instead of spending space on prefixes.
+            if (naturalTotal > remaining) {
+                labels = compactStatsValues
+                naturalTotal = 0f
+                for (i in labels.indices) {
+                    metricWidths[i] = statsPaint.measureText(labels[i]) + 8f * density
+                    naturalTotal += metricWidths[i]
+                }
+            }
+            val fit = minOf(1f, remaining / naturalTotal.coerceAtLeast(1f))
+            var left = textX
+            chipPaint.color = Color.WHITE
+            chipPaint.alpha = (opacity * 20).toInt()
+            for (i in labels.indices) {
+                val value = labels[i]
+                val chipWidth = metricWidths[i] * fit
+                chipRect.set(left, 26f * density, left + chipWidth, 40f * density)
+                canvas.drawRoundRect(chipRect, 4f * density, 4f * density, chipPaint)
+                val label = TextUtils.ellipsize(value, statsPaint, (chipWidth - 8f * density).coerceAtLeast(0f), TextUtils.TruncateAt.END)
+                val baseline = chipRect.centerY() - (statsPaint.ascent() + statsPaint.descent()) / 2
+                canvas.drawText(label.toString(), left + 4f * density, baseline, statsPaint)
+                left += chipWidth + gap
+            }
         }
+        // A static chevron advertises the existing drawer action; click/drag handlers are unchanged.
+        val arrowX = logicalWidth - 16f * density
+        affordancePath.reset()
+        affordancePath.moveTo(arrowX - 2f * density, cy - 4f * density)
+        affordancePath.lineTo(arrowX + 2f * density, cy)
+        affordancePath.lineTo(arrowX - 2f * density, cy + 4f * density)
+        canvas.drawPath(affordancePath, affordancePaint)
         canvas.restoreToCount(outerSave)
     }
 

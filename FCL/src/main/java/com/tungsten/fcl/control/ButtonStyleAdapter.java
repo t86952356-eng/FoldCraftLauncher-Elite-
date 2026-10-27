@@ -95,11 +95,11 @@ public class ButtonStyleAdapter extends FCLAdapter {
         }
         ControlButtonStyle style = list.get(i);
         GradientDrawable drawableNormal = new GradientDrawable();
-        drawableNormal.setCornerRadius(ConvertUtils.dip2px(getContext(), style.getCornerRadius() / 10f));
+        drawableNormal.setCornerRadii(style.getCornerSettings().getPixelRadii(false, getContext().getResources().getDisplayMetrics().density));
         drawableNormal.setStroke(ConvertUtils.dip2px(getContext(), style.getStrokeWidth() / 10f), style.getStrokeColor());
         drawableNormal.setColor(style.getFillColor());
         GradientDrawable drawablePressed = new GradientDrawable();
-        drawablePressed.setCornerRadius(ConvertUtils.dip2px(getContext(), style.getCornerRadiusPressed() / 10f));
+        drawablePressed.setCornerRadii(style.getCornerSettings().getPixelRadii(true, getContext().getResources().getDisplayMetrics().density));
         drawablePressed.setStroke(ConvertUtils.dip2px(getContext(), style.getStrokeWidthPressed() / 10f), style.getStrokeColorPressed());
         drawablePressed.setColor(style.getFillColorPressed());
         viewHolder.button.setGravity(Gravity.CENTER);

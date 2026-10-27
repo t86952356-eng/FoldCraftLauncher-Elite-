@@ -121,7 +121,10 @@ public class AddDirectionStyleDialog extends FCLDialog implements View.OnClickLi
             buttonStyle.setCornerRadiusPressed(style.getButtonStyle().getCornerRadiusPressed());
             buttonStyle.setFillColorPressed(style.getButtonStyle().getFillColorPressed());
             buttonStyle.setFillColorPressed(style.getButtonStyle().getFillColorPressed());
+            buttonStyle.getCornerSettings().copyFrom(style.getButtonStyle().getCornerSettings());
             this.beforeStyle = buttonStyle.clone();
+            buttonStyle.getCornerSettings().addListener(observable ->
+                    style.getButtonStyle().getCornerSettings().copyFrom(buttonStyle.getCornerSettings()));
             style.getButtonStyle().textSizeProperty().bind(buttonStyle.textSizeProperty());
             style.getButtonStyle().textColorProperty().bind(buttonStyle.textColorProperty());
             style.getButtonStyle().strokeWidthProperty().bind(buttonStyle.strokeWidthProperty());
@@ -137,6 +140,7 @@ public class AddDirectionStyleDialog extends FCLDialog implements View.OnClickLi
 
             buttonStyleSet.setOnClickListener(v -> {
                 ButtonStyleDialog dialog = new ButtonStyleDialog(getContext(), true, buttonStyle, style -> {
+                    buttonStyle.getCornerSettings().copyFrom(style.getCornerSettings());
                     buttonStyle.setName(style.getName());
                     buttonStyle.setTextSize(style.getTextSize());
                     buttonStyle.setTextColor(style.getTextColor());
@@ -350,6 +354,7 @@ public class AddDirectionStyleDialog extends FCLDialog implements View.OnClickLi
             buttonStyle.setStrokeWidth(beforeStyle.getStrokeWidth());
             buttonStyle.setStrokeColor(beforeStyle.getStrokeColor());
             buttonStyle.setCornerRadius(beforeStyle.getCornerRadius());
+            buttonStyle.getCornerSettings().copyFrom(beforeStyle.getCornerSettings());
             buttonStyle.setFillColor(beforeStyle.getFillColor());
             buttonStyle.setTextSizePressed(beforeStyle.getTextSizePressed());
             buttonStyle.setTextColorPressed(beforeStyle.getTextColorPressed());

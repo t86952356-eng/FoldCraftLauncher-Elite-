@@ -64,6 +64,21 @@ object ControllerIconRegistry {
         Icon("unlock", R.string.controller_icon_unlock, R.drawable.controller_icon_unlock),
         Icon("volume", R.string.controller_icon_volume, R.drawable.controller_icon_volume),
         Icon("pause", R.string.controller_icon_pause, R.drawable.controller_icon_pause),
+        Icon("gamepad", R.string.controller_icon_gamepad, R.drawable.controller_icon_gamepad),
+        Icon("crosshair", R.string.controller_icon_crosshair, R.drawable.controller_icon_crosshair),
+        Icon("hand", R.string.controller_icon_hand, R.drawable.controller_icon_hand),
+        Icon("rocket", R.string.controller_icon_rocket, R.drawable.controller_icon_rocket),
+        Icon("gem", R.string.controller_icon_gem, R.drawable.controller_icon_gem),
+        Icon("key", R.string.controller_icon_key, R.drawable.controller_icon_key),
+        Icon("door", R.string.controller_icon_door, R.drawable.controller_icon_door),
+        Icon("sun", R.string.controller_icon_sun, R.drawable.controller_icon_sun),
+        Icon("clock", R.string.controller_icon_clock, R.drawable.controller_icon_clock),
+        Icon("download", R.string.controller_icon_download, R.drawable.controller_icon_download),
+        Icon("upload", R.string.controller_icon_upload, R.drawable.controller_icon_upload),
+        Icon("play", R.string.controller_icon_play, R.drawable.controller_icon_play),
+        Icon("headphones", R.string.controller_icon_headphones, R.drawable.controller_icon_headphones),
+        Icon("battery", R.string.controller_icon_battery, R.drawable.controller_icon_battery),
+        Icon("move", R.string.controller_icon_move, R.drawable.controller_icon_move),
     )
 
     fun find(id: String?): Icon = icons.firstOrNull { it.id == id } ?: icons.first()

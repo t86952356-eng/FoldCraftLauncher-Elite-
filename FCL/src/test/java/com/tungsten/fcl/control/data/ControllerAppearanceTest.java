@@ -148,13 +148,16 @@ public class ControllerAppearanceTest {
     }
 
     @Test
-    public void iconCatalogAddsExactly24UniquePortableIds() {
+    public void iconCatalogPreservesExistingIdsAndAdds15LucideIcons() {
         java.util.Set<String> ids = new java.util.HashSet<>();
         for (com.tungsten.fcl.control.ControllerIconRegistry.Icon icon :
                 com.tungsten.fcl.control.ControllerIconRegistry.INSTANCE.getIcons()) {
             assertTrue(ids.add(icon.getId()));
         }
-        assertEquals(53, ids.size()); // 28 original + 24 new + none.
+        assertEquals(68, ids.size()); // 52 existing + 15 new + none.
+        assertTrue(ids.contains("gamepad"));
+        assertTrue(ids.contains("crosshair"));
+        assertTrue(ids.contains("battery"));
         assertTrue(ids.contains("capacitor"));
         assertTrue(ids.contains("motion_wave"));
         assertTrue(ids.contains("minecraft_pickaxe"));

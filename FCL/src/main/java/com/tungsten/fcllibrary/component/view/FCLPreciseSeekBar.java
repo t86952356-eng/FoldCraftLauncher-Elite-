@@ -88,20 +88,33 @@ public class FCLPreciseSeekBar extends RelativeLayout {
         addView(minus, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         addView(seekBar, new ViewGroup.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT));
         addView(add, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        post(() -> add.post(() -> seekBar.post(() -> minus.post(() -> {
-            if (add.getMeasuredHeight() >= seekBar.getMeasuredHeight()) {
-                seekBar.setY((add.getMeasuredHeight() - seekBar.getMeasuredHeight()) / 2f);
-            } else {
-                add.setY((seekBar.getMeasuredHeight() - add.getMeasuredHeight()) / 2f);
-                minus.setY((seekBar.getMeasuredHeight() - minus.getMeasuredHeight()) / 2f);
-            }
-            minus.setX(0);
-            add.setX(getMeasuredWidth() - add.getMeasuredWidth());
-            ViewGroup.LayoutParams layoutParams = seekBar.getLayoutParams();
-            layoutParams.width = getMeasuredWidth() - (add.getMeasuredWidth() + minus.getMeasuredWidth());
-            seekBar.setLayoutParams(layoutParams);
-            seekBar.setX(minus.getMeasuredWidth());
-        }))));
+        post(this::layoutControls);
+    }
+
+    /** Recompute after a hidden Advanced row is shown or its width changes. */
+    private void layoutControls() {
+        if (add == null || minus == null || seekBar == null || getWidth() <= 0) return;
+        int left = getPaddingLeft();
+        int right = getWidth() - getPaddingRight();
+        int contentHeight = getHeight() - getPaddingTop() - getPaddingBottom();
+        minus.setX(left);
+        add.setX(right - add.getMeasuredWidth());
+        minus.setY(getPaddingTop() + (contentHeight - minus.getMeasuredHeight()) / 2f);
+        add.setY(getPaddingTop() + (contentHeight - add.getMeasuredHeight()) / 2f);
+        seekBar.setY(getPaddingTop() + (contentHeight - seekBar.getMeasuredHeight()) / 2f);
+        int width = Math.max(0, right - left - add.getMeasuredWidth() - minus.getMeasuredWidth());
+        ViewGroup.LayoutParams params = seekBar.getLayoutParams();
+        if (params.width != width) {
+            params.width = width;
+            seekBar.setLayoutParams(params);
+        }
+        seekBar.setX(left + minus.getMeasuredWidth());
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        layoutControls();
     }
 
     @Override

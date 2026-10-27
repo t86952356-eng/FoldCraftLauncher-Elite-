@@ -343,11 +343,11 @@ public class ControlDirection extends RelativeLayout implements CustomView {
         int viewSize = getSize();
         if (data.getStyle().getStyleType() == ControlDirectionStyle.Type.BUTTON) {
             drawableNormal = new GradientDrawable();
-            drawableNormal.setCornerRadius(ConvertUtils.dip2px(getContext(), data.getStyle().getButtonStyle().getCornerRadius() / 10f));
+            drawableNormal.setCornerRadii(data.getStyle().getButtonStyle().getCornerSettings().getPixelRadii(false, getResources().getDisplayMetrics().density));
             drawableNormal.setStroke(ConvertUtils.dip2px(getContext(), data.getStyle().getButtonStyle().getStrokeWidth() / 10f), data.getStyle().getButtonStyle().getStrokeColor());
             drawableNormal.setColor(data.getStyle().getButtonStyle().getFillColor());
             drawablePressed = new GradientDrawable();
-            drawablePressed.setCornerRadius(ConvertUtils.dip2px(getContext(), data.getStyle().getButtonStyle().getCornerRadiusPressed() / 10f));
+            drawablePressed.setCornerRadii(data.getStyle().getButtonStyle().getCornerSettings().getPixelRadii(true, getResources().getDisplayMetrics().density));
             drawablePressed.setStroke(ConvertUtils.dip2px(getContext(), data.getStyle().getButtonStyle().getStrokeWidthPressed() / 10f), data.getStyle().getButtonStyle().getStrokeColorPressed());
             drawablePressed.setColor(data.getStyle().getButtonStyle().getFillColorPressed());
             removeAllViews();

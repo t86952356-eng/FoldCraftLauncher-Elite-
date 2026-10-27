@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="controller_icon_gamepad">Gamepad</string>
+    <string name="controller_icon_crosshair">Crosshair</string>
+    <string name="controller_icon_hand">Hand</string>
+    <string name="controller_icon_rocket">Rocket</string>
+    <string name="controller_icon_gem">Gem</string>
+    <string name="controller_icon_key">Key</string>
+    <string name="controller_icon_door">Open door</string>
+    <string name="controller_icon_sun">Sun</string>
+    <string name="controller_icon_clock">Clock</string>
+    <string name="controller_icon_download">Download</string>
+    <string name="controller_icon_upload">Upload</string>
+    <string name="controller_icon_play">Play</string>
+    <string name="controller_icon_headphones">Headphones</string>
+    <string name="controller_icon_battery">Charging battery</string>
+    <string name="controller_icon_move">Move</string>
+</resources>

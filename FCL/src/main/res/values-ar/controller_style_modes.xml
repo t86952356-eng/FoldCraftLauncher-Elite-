@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="style_corner_radius_mode">وضع تقويس الزوايا</string>
+    <string name="style_corner_simple">Simple — بسيط</string>
+    <string name="style_corner_advanced">Advanced — متقدم</string>
+    <string name="style_corner_top_left">أعلى اليسار</string>
+    <string name="style_corner_top_right">أعلى اليمين</string>
+    <string name="style_corner_bottom_right">أسفل اليمين</string>
+    <string name="style_corner_bottom_left">أسفل اليسار</string>
+    <string name="style_animation_duration_short">المدة</string>
+</resources>

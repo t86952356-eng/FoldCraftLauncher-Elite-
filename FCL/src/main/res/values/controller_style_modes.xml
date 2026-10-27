@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="style_corner_radius_mode">Corner Radius Mode</string>
+    <string name="style_corner_simple">Simple</string>
+    <string name="style_corner_advanced">Advanced</string>
+    <string name="style_corner_top_left">Top left</string>
+    <string name="style_corner_top_right">Top right</string>
+    <string name="style_corner_bottom_right">Bottom right</string>
+    <string name="style_corner_bottom_left">Bottom left</string>
+    <string name="style_animation_duration_short">Duration</string>
+</resources>
