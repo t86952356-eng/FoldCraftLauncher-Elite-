@@ -1,6 +1,24 @@
 [
   {
     "type": "release",
+    "versionCode": 1351,
+    "versionName": "1.3.5.1",
+    "date": "2026.11.06",
+    "description": [
+      {
+        "lang": "en",
+        "text": "Every release now ships a full source code archive (FCL-source-<version>.zip) alongside the five APK bundles, generated automatically by the publish workflow from the exact release commit (1,864 tracked files). The same archive was attached retroactively to the existing 1.3.5.0 release. No UI, button or feature was changed: this version carries the identical Aurora interface of 1.3.5.0 with only an internal version bump (versionCode 1351); APK signing, user settings and data are untouched."
+      },
+      {
+        "lang": "ar",
+        "text": "كل إصدار جديد يرفق الآن أرشيفًا كاملًا للسورس كود (FCL-source-<version>.zip) إلى جانب حزم APK الخمس، يولّده سير عمل النشر تلقائيًا من نقطة الإصدار نفسها (1,864 ملفًا متتبعًا). كما أُرفق الأرشيف نفسه بأثر رجعي بإصدار 1.3.5.0 القائم. لا تغيير في واجهة أو أزرار أو وظائف: يحمل هذا الإصدار واجهة Aurora مطابقة لـ1.3.5.0 مع ترقية داخلية للإصدار فقط (versionCode 1351)؛ التوقيع وإعدادات المستخدم وبياناته غير متأثرة."
+      }
+    ],
+    "netdiskUrl": "https://github.com/t86952356-eng/FoldCraftLauncher-Elite-/releases/download/1.3.5.1/FCL-release-1.3.5.1-all.apk",
+    "url": "https://github.com/t86952356-eng/FoldCraftLauncher-Elite-/releases/download/1.3.5.1/FCL-release-1.3.5.1-all.apk"
+  },
+  {
+    "type": "release",
     "versionCode": 1350,
     "versionName": "1.3.5.0",
     "date": "2026.11.06",

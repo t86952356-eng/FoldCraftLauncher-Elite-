@@ -85,6 +85,14 @@ jobs:
             echo "FoldCraft Launcher $TAG" > RELEASE_BODY.md
           fi
 
+      # 为每个 release 附加完整源码 ZIP，与 APK 一起发布
+      - name: Create source zip
+        env:
+          TAG: ${{ needs.prepare.outputs.tag }}
+        run: |
+          git archive --format=zip --prefix="FCL-source-${TAG}/" -o "FCL-source-${TAG}.zip" HEAD
+          ls -lh "FCL-source-${TAG}.zip"
+
       - name: Release
         uses: softprops/action-gh-release@v3
         with:
@@ -92,5 +100,7 @@ jobs:
           token: ${{ secrets.TOKEN || secrets.GITHUB_TOKEN }}
           tag_name: ${{ needs.prepare.outputs.tag }}
           target_commitish: ${{ github.sha }}
-          files: apks/**/*.apk
+          files: |
+            apks/**/*.apk
+            FCL-source-*.zip
           body_path: RELEASE_BODY.md

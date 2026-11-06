@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.3.5.1] - 2026-11-06
+
+### العربية
+
+- إضافة أرشيف السورس كود (FCL-source-1.3.5.1.zip) كأصل رسمي في كل إصدار جديد إلى جانب حزم APK الخمس، ليتمكن المستخدمون والمطورون من تنزيل الشيفرة المصدرية الكاملة المطابقة تمامًا لنقطة الإصدار المنشور.
+- تحديث سير عمل النشر publish-release.yml لإنشاء أرشيف ZIP تلقائيًا من شجرة المصدر عند نقطة الإصدار (1,864 ملفًا تشمل FCL وLWJGL وTerracotta وZipFileSystem وكل الملفات المتتبعة في المستودع) ورفعه مع الأصول.
+- إرفاق أرشيف السورس نفسه بأثر رجعي بإصدار 1.3.5.0 القائم، ليحمل أحدث إصدار منشور الأرشيف أيضًا دون تعديل الوسم أو الإصدارات القديمة.
+- لا تغيير في واجهة المستخدم أو الأزرار أو الوظائف: هذا الإصدار يحمل نفس واجهة Aurora 1.3.5.0 مع ترقية داخلية للإصدار فقط (versionCode 1351)؛ التوقيع وإعدادات المستخدم وبياناته غير متأثرة.
+
+### English
+
+- Added a source code archive (FCL-source-1.3.5.1.zip) as an official asset on every new release alongside the five APK bundles, so users and developers can download the complete source tree matching the exact release commit.
+- Updated the publish-release.yml workflow to automatically build a ZIP archive from the source tree at the release commit (1,864 tracked files covering FCL, LWJGL, Terracotta and ZipFileSystem) and upload it with the release assets.
+- Retroactively attached the matching source archive to the existing 1.3.5.0 release, so the latest published release carries it too; no old tag or release was modified.
+- No UI, button or feature change: this release ships the exact Aurora interface of 1.3.5.0 with only an internal version bump (versionCode 1351); APK signing, user settings and data are untouched.
+
+### Validation
+
+- publish-release.yml passes YAML parsing and workflow structure checks; the release job now runs: Checkout → Download apks → Extract changelog → Create source zip → Release.
+- The source-zip step was reproduced locally with git archive over the full tracked tree (1,864 files, 481MB) and the archive verified readable with a valid central directory.
+- Release pipeline for APKs unchanged: same 5-architecture matrix, same key-store.jks signing, SVG icon path checks still run before every Gradle build.
+- Retroactive 1.3.5.0 archive was generated from tag 1.3.5.0 and uploaded through the GitHub releases API.
+- No physical-device runtime test was performed (no application code changed in this release).
+
 ## [1.3.5.0] - 2026-11-06
 
 ### العربية
