@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="default_theme_color">#7797CF</color>
-    <color name="default_theme_color_dark">#4E77C1</color>
+    <color name="default_theme_color">#5B6CFF</color>
+    <color name="default_theme_color_dark">#7C8CFF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="ui_bg_color">#40F4F4F4</color>
-    <color name="right_menu_color">#80F4F4F4</color>
+    <color name="ui_bg_color">#54F7F8FC</color>
+    <color name="right_menu_color">#73F7F8FC</color>
     <color name="icon_background_color">#FFFFFF</color>
-    <color name="primary_text">#0E0E0E</color>
+    <color name="primary_text">#0E0F1A</color>
+    <!-- Aurora UI 玻璃拟态表面（1.3.5.0） -->
+    <color name="glass_card">#66FFFFFF</color>
+    <color name="glass_card_stroke">#335B6CFF</color>
+    <color name="start_surface">#B3FFFFFF</color>
+    <color name="item_stroke">#1F0E0F1A</color>
+    <color name="item_stroke_pressed">#335B6CFF</color>
+    <color name="item_pressed_fill">#1F5B6CFF</color>
     <!-- 原 FCLLibrary 模块颜色（模块已并入 FCL） -->
-    <color name="dialog_background">#F4F4F4</color>
+    <color name="dialog_background">#F3F4FB</color>
 </resources>

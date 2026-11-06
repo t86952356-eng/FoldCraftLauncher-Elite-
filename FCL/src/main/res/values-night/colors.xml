@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="primary_text">#FFFFFF</color>
+    <!-- Aurora UI 玻璃拟态表面（1.3.5.0） -->
+    <color name="ui_bg_color">#3D101426</color>
+    <color name="right_menu_color">#4D101426</color>
+    <color name="glass_card">#66141A30</color>
+    <color name="glass_card_stroke">#337C8CFF</color>
+    <color name="start_surface">#B3161B33</color>
+    <color name="item_stroke">#1FFFFFFF</color>
+    <color name="item_stroke_pressed">#337C8CFF</color>
+    <color name="item_pressed_fill">#1F7C8CFF</color>
     <!-- 原 FCLLibrary 模块颜色（模块已并入 FCL） -->
-    <color name="dialog_background">#232323</color>
+    <color name="dialog_background">#1B1D2E</color>
 </resources>

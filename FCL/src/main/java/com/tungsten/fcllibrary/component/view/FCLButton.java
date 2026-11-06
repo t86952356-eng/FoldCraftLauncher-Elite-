@@ -76,10 +76,10 @@ public class FCLButton extends AppCompatButton {
         drawableNormal = new GradientDrawable();
         drawablePress = new GradientDrawable();
         drawableNormal.setShape(shape);
-        drawableNormal.setCornerRadius(ConvertUtils.dip2px(getContext(), 8));
+        drawableNormal.setCornerRadius(ConvertUtils.dip2px(getContext(), 14));
         drawableNormal.setColor(Color.TRANSPARENT);
         drawablePress.setShape(shape);
-        drawablePress.setCornerRadius(ConvertUtils.dip2px(getContext(), 8));
+        drawablePress.setCornerRadius(ConvertUtils.dip2px(getContext(), 14));
         drawablePress.setColor(ThemeEngine.getInstance().getTheme().getLtColor());
         setStateListAnimator(AnimatorInflater.loadStateListAnimator(getContext(), R.xml.anim_scale));
     }

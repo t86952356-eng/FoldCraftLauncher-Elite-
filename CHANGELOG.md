@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.3.5.0] - 2026-11-06
+
+### العربية
+
+- إعادة تصميم واجهة المشغل بالكامل (تحديث 180 درجة) بنمط Aurora العصري: خلفيات متدرجة جديدة بنقاط توهج ناعمة للوضعين الفاتح والداكن، وألوان أساسية جديدة (نيلي كهربائي #5B6CFF فاتح / #7C8CFF داكن) تنعكس تلقائيًا على كل عناصر الثيم.
+- أسطح زجاجية عصرية: شريط القائمة الأيسر أصبح عائمًا على شكل حبة دواء بزوايا 28dp مع حد شفاف، ولوحة الحساب وبطاقة الإصدار وزر الإطلاق حصلت على بطاقات زجاجية بحدود ملونة وزوايا 18-26dp.
+- أنميشن أسرع وأنعم: انتقالات الصفحات من 500ms إلى 260ms مع انزلاق خفيف 8%، وضغط الأزرار أصبح 0.95 مع ارتداد مرن بدل 0.9 القاسي، وتحديث انتقالات القوائم المنسدلة.
+- تحديث زوايا جميع مكونات الواجهة من 8dp إلى 14-20dp (الحوارات والبطاقات وعناصر القوائم والأزرار) مع حدود ناعمة شفافة بدل الرمادي الثقيل.
+- ألوان أسطح جديدة: سطح فاتح بمسحة نيلية (#F3F4FB) وداكن كحلي عميق (#1B1D2E) مع دعم كامل للوضع الليلي لجميع الأسطح الزجاجية الجديدة.
+- لم يُحذف أي زر أو واجهة: جميع معرفات العناصر الـ29 في الشاشة الرئيسية كما هي، وإعدادات المستخدم وبياناته والتوقيع غير متأثرة.
+
+### English
+
+- Full launcher interface redesign (180-degree refresh) with a modern Aurora style: new gradient backgrounds with soft glow orbs for both light and dark modes, and a new primary palette (electric indigo #5B6CFF light / #7C8CFF dark) reflected across every themed component.
+- Modern glassmorphism surfaces: the left menu rail is now a floating pill (28dp corners, translucent outline), while the account block, version card and launch button received glass cards with tinted strokes and 18-26dp corners.
+- Snappier, smoother animations: page transitions cut from 500ms to 260ms with a subtle 8% slide, button press feedback softened from 0.9 to 0.95 with elastic release, and refreshed dropdown transitions.
+- Rounded corners across every UI component raised from 8dp to 14-20dp (dialogs, cards, list items, buttons) with soft translucent strokes replacing heavy gray borders.
+- Fresh surface colors: light surface with an indigo hint (#F3F4FB) and deep navy dark surface (#1B1D2E) with full night mode support for every new glass surface.
+- No button or interface removed: all 29 view IDs on the main screen are unchanged; user settings, data and APK signing remain untouched.
+
+### Validation
+
+- All 24 modified/created XML resources pass well-formedness and reference-integrity checks (colors, drawables).
+- All 29 button/view IDs in activity_main.xml verified present against the 1.3.4.5 baseline.
+- Six mandatory Python regression tests pass and 68 controller drawables / 210 paths re-validated (0 changes needed).
+- Background bitmaps verified 1080x2400 with expected luminance for both modes; file size reduced from 928KB/416KB to 50KB/37KB.
+- No physical-device runtime test was performed.
+
 ## [1.3.4.5] - 2026-10-27
 
 ### العربية

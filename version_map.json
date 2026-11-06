@@ -1,6 +1,24 @@
 [
   {
     "type": "release",
+    "versionCode": 1350,
+    "versionName": "1.3.5.0",
+    "date": "2026.11.06",
+    "description": [
+      {
+        "lang": "en",
+        "text": "Full launcher redesign with a modern Aurora style: new gradient backgrounds with soft glow orbs, electric indigo palette (#5B6CFF light / #7C8CFF dark), glassmorphism menu rail, version card and launch pill, snappy 260ms transitions and 14-20dp rounded surfaces.\nNo button or interface was removed; all 29 view IDs on the main screen are preserved, and user settings, data and APK signing remain untouched."
+      },
+      {
+        "lang": "ar",
+        "text": "إعادة تصميم واجهة المشغل بالكامل بنمط Aurora العصري: خلفيات متدرجة جديدة بنقاط توهج ناعمة، ألوان نيلية كهربائية (#5B6CFF فاتح / #7C8CFF داكن)، أسطح زجاجية للشريط الجانبي وبطاقة الإصدار وزر الإطلاق، انتقالات سريعة 260ms وزوايا دائرية 14-20dp.\nلم يُحذف أي زر أو واجهة؛ جميع معرفات العناصر الـ29 محفوظة، وإعدادات المستخدم وبياناته والتوقيع غير متأثرة."
+      }
+    ],
+    "netdiskUrl": "https://github.com/t86952356-eng/FoldCraftLauncher-Elite-/releases/download/1.3.5.0/FCL-release-1.3.5.0-all.apk",
+    "url": "https://github.com/t86952356-eng/FoldCraftLauncher-Elite-/releases/download/1.3.5.0/FCL-release-1.3.5.0-all.apk"
+  },
+  {
+    "type": "release",
     "versionCode": 1345,
     "versionName": "1.3.4.5",
     "date": "2026.10.27",
